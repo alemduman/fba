@@ -35,9 +35,10 @@ async function main() {
   if (DRY) { console.log('Проверочный запуск: на YouTube НЕ загружаем.'); summary('### YouTube: токен действителен, всё готово к загрузке\n'); return; }
 
   // 3. название и описание
-  const base = (post.title || post.caption.split('\n')[0]).replace(/\s+/g, ' ').trim();
+  const hook = post.caption.split('\n').find(l => /^Who wins\?/i.test(l));
+  const base = (hook || post.title || post.caption.split('\n')[0]).replace(/\s+/g, ' ').trim();
   const title = (base.length > 88 ? base.slice(0, 87) + '…' : base) + ' #Shorts';
-  const description = post.caption.replace(/[<>]/g, '') + '\n\n#Shorts';
+  const description = post.caption.replace(/[<>]/g, '') + '\n\n#Shorts #flags #geography #countries';
   const meta = { snippet: { title, description, categoryId: String(yt.category) }, status: { privacyStatus: yt.privacy, selfDeclaredMadeForKids: false } };
 
   // 4. resumable upload

@@ -224,6 +224,15 @@ async function main() {
   let cover = null;
   if (coverB64) { cover = 'v/' + name + '.jpg'; fs.writeFileSync(path.join(SITE, cover), Buffer.from(coverB64, 'base64')); }
 
+  // Текст для охвата: короткий призыв выбрать победителя в комментариях + широкие хэштеги (до 5, лимит Instagram).
+  {
+    const paras = text.split(/\n\s*\n/).map(x => x.trim()).filter(Boolean);
+    const body = paras.filter(x => !/^Cut every rival/i.test(x) && !/^Follow for/i.test(x) && !/^#\S+(\s+#\S+)*$/.test(x));
+    if (body.length < paras.length) {
+      const tags = sel.slice(0, 2).map(id => '#' + (byId[id] ? byId[id].en : id).toLowerCase().replace(/[^a-z0-9]+/g, ''));
+      text = [...body, 'Which flag survives? Pick your winner in the comments 👇', 'Follow for a new battle every 2 hours ⚔️', [...tags, '#flagbattle', '#geography', '#countries'].join(' ')].join('\n\n');
+    }
+  }
   // Instagram разрешает не больше 5 хэштегов: свои из extraHashtags идут первыми, остальные места занимают хэштеги приложения
   let text = caption.text;
   const extra = (cfg.extraHashtags || []).map(t => '#' + String(t).trim().replace(/^#+/, '').replace(/\s+/g, '')).filter(t => t.length > 1);
