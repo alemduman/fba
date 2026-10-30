@@ -18,12 +18,12 @@ export function loadConfig() {
   try { c = JSON.parse(fs.readFileSync(path.join(ROOT, 'config.json'), 'utf8')); }
   catch (e) { throw new Error(`В config.json ошибка записи (часто это лишняя или пропущенная запятая, кавычка или скобка): ${e.message}`); }
   return {
-    autoPublish: false, startDate: '', timezone: 'Asia/Baku', coverStyle: 'who', picks: null, language: 'en', mode: 'lines', speed: 290, lines: 40, ramp: 5, length: '20-30', music: 'auto', sound: 'all',
+    autoPublish: false, maxSeconds: 30, recordBitrate: 20e6, startDate: '', timezone: 'Asia/Baku', coverStyle: 'who', picks: null, language: 'en', mode: 'lines', speed: 290, lines: 40, ramp: 5, length: '20-30', music: 'auto', sound: 'all',
     watermark: '', ad: 'off', countriesPerVideo: [2, 3], groups: ['eu'], include: [], exclude: [],
-    tournament: { enabled: false, size: 8, groups: ['eu'], name: '', outro: true },
+    tournament: { enabled: false, weekday: '', size: 8, teams: 'rivals', length: '18-25', groups: ['eu'], name: '', outro: true },
     cover: true, shareToFeed: true, extraHashtags: [], login: 'unified', apiVersion: 'v26.0',
     ...c,
-    tournament: { enabled: false, size: 8, groups: ['eu'], name: '', outro: true, ...(c.tournament || {}) },
+    tournament: { enabled: false, weekday: '', size: 8, teams: 'rivals', length: '18-25', groups: ['eu'], name: '', outro: true, ...(c.tournament || {}) },
   };
 }
 export function loadState() {

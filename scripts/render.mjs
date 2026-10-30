@@ -32,6 +32,28 @@ function pickCurated(P, history, countries, [range]) {
   throw new Error('Не удалось подобрать страны: проверь списки picks в config.json.');
 }
 
+// Участники турнира: сначала пары-соперники из picks.pairs (четвертьфиналы будут «принципиальными»), остальное добираем из популярных
+function pickTeams(P, size, countries, rivals) {
+  const known = new Set(countries.map(c => c.id));
+  const europe = (P.europe || []).filter(i => known.has(i)), world = (P.world || []).filter(i => known.has(i));
+  const ids = [], used = new Set();
+  if (rivals) for (const pr of shuffle((P.pairs || []).filter(pr => pr.length === 2 && pr.every(i => known.has(i))))) {
+    if (ids.length >= size) break;
+    if (pr.some(i => used.has(i))) continue;
+    ids.push(...(Math.random() < 0.5 ? pr : pr.slice().reverse())); pr.forEach(i => used.add(i));
+  }
+  for (let t = 0; t < 500 && ids.length < size; t += 2) {
+    const two = [];
+    for (let k = 0; k < 50 && two.length < 2; k++) {
+      const src = Math.random() < (P.europeShare ?? 0.65) ? europe : (world.length ? world : europe), id = pick(src);
+      if (!used.has(id) && !two.includes(id)) two.push(id);
+    }
+    if (two.length === 2) { ids.push(...two); two.forEach(i => used.add(i)); }
+  }
+  if (ids.length < size) throw new Error('Не удалось подобрать участников турнира: проверь списки picks в config.json.');
+  return ids.slice(0, size);
+}
+
 async function main() {
   const cfg = loadConfig();
   const state = loadState();
@@ -41,8 +63,11 @@ async function main() {
     setOutput('skip', 'true');
     return;
   }
+  const NOW = process.env.FAKE_NOW ? new Date(process.env.FAKE_NOW) : new Date();   // FAKE_NOW нужен только для проверок
+  const TZ = cfg.timezone || 'Asia/Baku';
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(NOW);                         // ГГГГ-ММ-ДД
+  const weekday = new Intl.DateTimeFormat('en-US', { timeZone: TZ, weekday: 'short' }).format(NOW).toLowerCase();   // mon…sun
   if (process.env.GITHUB_EVENT_NAME === 'schedule' && cfg.startDate) {
-    const today = new Intl.DateTimeFormat('en-CA', { timeZone: cfg.timezone || 'Asia/Baku' }).format(new Date());   // ГГГГ-ММ-ДД
     if (today < cfg.startDate) {
       console.log(`Публикации по расписанию начнутся с ${cfg.startDate} (сейчас ${today}). Этот запуск ничего не делает.`);
       summary(`### Ещё рано\nПубликации по расписанию начнутся с ${cfg.startDate} (в config.json поле \`startDate\`). Сейчас ${today}.`);
@@ -85,17 +110,30 @@ async function main() {
 
   let sel, tour = null;
   const T = cfg.tournament || {};
-  if (T.enabled) {
-    tour = state.tournament && state.tournament.phase !== 'done' ? state.tournament : null;
+  // Турнир идёт, если он включён и (уже начат и не закончен, либо сегодня день турнира и сегодня турнир ещё не проходил)
+  const active = !!(state.tournament && state.tournament.phase !== 'done');
+  const dayOk = !T.weekday || String(T.weekday).toLowerCase().slice(0, 3) === weekday;
+  const doneToday = !!(T.weekday && state.tournament && state.tournament.phase === 'done' && state.tournament.date === today);
+  const tourMode = !!T.enabled && (active || (dayOk && !doneToday));
+  if (tourMode) {
+    tour = active ? state.tournament : null;
     if (!tour) {
       const size = [4, 8, 16].includes(+T.size) ? +T.size : 8;
-      const groups = T.groups && T.groups.length ? T.groups : ['countries'];
-      const pool = poolFor(groups);
-      if (pool.length < size) throw new Error(`Для турнира на ${size} не хватает флагов в группах ${groups.join(', ')} (есть ${pool.length}).`);
-      const src = groups.length === 1 ? (groups[0] === 'countries' ? 'all' : groups[0]) : 'all';
+      let ids, src = 'all';
+      if (cfg.picks) {
+        ids = pickTeams(cfg.picks, size, countries, T.teams !== 'random');
+        const eu = new Set(cfg.picks.europe || []);
+        if (ids.every(i => eu.has(i))) src = 'eu';
+      } else {
+        const groups = T.groups && T.groups.length ? T.groups : ['countries'];
+        const pool = poolFor(groups);
+        if (pool.length < size) throw new Error(`Для турнира на ${size} не хватает флагов в группах ${groups.join(', ')} (есть ${pool.length}).`);
+        src = groups.length === 1 ? (groups[0] === 'countries' ? 'all' : groups[0]) : 'all';
+        ids = shuffle(pool).slice(0, size);
+      }
       const name = T.name || await page.evaluate(s => window.FlagBattle.tourDefaultName(s), src);
       const R = Math.log2(size);
-      tour = { v: 1, phase: 'live', size, src, shuffle: false, outro: T.outro !== false, ids: shuffle(pool).slice(0, size), name,
+      tour = { v: 1, phase: 'live', size, src, shuffle: false, outro: T.outro !== false, ids, name, date: today,
         W: Array.from({ length: R }, (_, r) => Array(size >> (r + 1)).fill(null)), cur: null };
       log(`Новый турнир «${name}»: ${tour.ids.join(', ')}`);
     }
@@ -123,45 +161,66 @@ async function main() {
     log(`Страны: ${sel.join(', ')}`);
   }
 
-  const conf = await page.evaluate(o => window.FlagBattle.configure(o), {
-    mode, lang: cfg.language, speed: cfg.speed, lines: cfg.lines, ramp: cfg.ramp, len: cfg.length, music: cfg.music, snd: cfg.sound,
-    wm: cfg.watermark || '', ad: AD === 'off' ? { on: false } : { on: true, kind: AD }, sel, tour, scale: 1, seedBase: Math.floor(Math.random() * 1e6), want: 'any',
-  });
-  log('Настройки:', JSON.stringify(conf));
-  const plan = await page.evaluate(() => window.FlagBattle.plan());
-  if (!plan) throw new Error('Не удалось подобрать партию с такими настройками.');
+  const MAXS = +cfg.maxSeconds > 0 ? +cfg.maxSeconds : 30;
+  const len = tourMode ? (T.length || '18-25') : cfg.length;   // в турнирном ролике ещё 3 секунды сетки в конце
+  let plan = null;
+  for (let attempt = 1; attempt <= 12 && !plan; attempt++) {
+    const conf = await page.evaluate(o => window.FlagBattle.configure(o), {
+      mode, lang: cfg.language, speed: cfg.speed, lines: cfg.lines, ramp: cfg.ramp, len, music: cfg.music, snd: cfg.sound,
+      wm: cfg.watermark || '', ad: AD === 'off' ? { on: false } : { on: true, kind: AD }, sel, tour, scale: 1,
+      seedBase: Math.floor(Math.random() * 1e6), want: 'any', bitrate: cfg.recordBitrate || 20e6,
+    });
+    if (attempt === 1) log('Настройки:', JSON.stringify(conf));
+    const p = await page.evaluate(() => window.FlagBattle.plan());
+    if (p && p.seconds <= MAXS) plan = p;
+    else log(`Партия не подошла (${p ? Math.round(p.seconds * 10) / 10 + ' с' : 'не найдена'}, нужно не больше ${MAXS} с), пробую ещё раз`);
+  }
+  if (!plan) throw new Error(`Не удалось подобрать партию не длиннее ${MAXS} с: уменьши "length" или увеличь "speed" в config.json.`);
   log(`Партия №${plan.seed}, около ${Math.round(plan.seconds)} с`);
 
-  const b64 = await page.evaluate(async () => {
-    const blob = await window.FlagBattle.record();
-    const u = new Uint8Array(await blob.arrayBuffer()); let s = '';
-    for (let i = 0; i < u.length; i += 32768) s += String.fromCharCode.apply(null, u.subarray(i, i + 32768));
-    return btoa(s);
-  });
-  log('Видео записано');
-  const caption = await page.evaluate(() => window.FlagBattle.caption());
+  // обложку делаем до записи: после записи турнир переходит к следующему матчу и подпись на обложке сбилась бы
   const coverB64 = cfg.cover === false ? null : await page.evaluate(async style => {
     const b = await window.FlagBattle.cover({ style }); if (!b) return null;
     const u = new Uint8Array(await b.arrayBuffer()); let s = '';
     for (let i = 0; i < u.length; i += 32768) s += String.fromCharCode.apply(null, u.subarray(i, i + 32768));
     return btoa(s);
   }, cfg.coverStyle === 'frame' ? 'frame' : 'who');
+
+  // запись; видео большое (высокий битрейт), поэтому забираем из браузера кусками
+  const raw = path.join(OUT, 'raw.mp4');
+  const size = await page.evaluate(async () => { window.__blob = await window.FlagBattle.record(); return window.__blob.size; });
+  {
+    const fd = fs.openSync(raw, 'w'), CH = 3 * 1024 * 1024;
+    for (let off = 0; off < size; off += CH) {
+      const part = await page.evaluate(async ([o, n]) => {
+        const u = new Uint8Array(await window.__blob.slice(o, o + n).arrayBuffer()); let s = '';
+        for (let i = 0; i < u.length; i += 32768) s += String.fromCharCode.apply(null, u.subarray(i, i + 32768));
+        return btoa(s);
+      }, [off, CH]);
+      fs.writeSync(fd, Buffer.from(part, 'base64'));
+    }
+    fs.closeSync(fd);
+  }
+  log(`Видео записано (${(size / 1048576).toFixed(1)} МБ до перекодирования)`);
+  const caption = await page.evaluate(() => window.FlagBattle.caption());
   const tourAfter = await page.evaluate(() => window.FlagBattle.tourState());
   await browser.close();
 
   const date = new Date().toISOString().slice(0, 10);
   const slug = sel.map(id => (byId[id] ? byId[id].en : id).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')).join('-').slice(0, 80);
   const name = `${date}-${slug}-${plan.seed}`;
-  const raw = path.join(OUT, 'raw.mp4'), video = path.join(SITE, 'v', name + '.mp4');
-  fs.writeFileSync(raw, Buffer.from(b64, 'base64'));
-  // Instagram просит H.264 + AAC; браузер без проприетарных кодеков пишет VP9/Opus, поэтому перекодируем
+  const video = path.join(SITE, 'v', name + '.mp4');
+  // Instagram просит H.264 + AAC; браузер без проприетарных кодеков пишет VP9/Opus, поэтому перекодируем.
+  // Качество максимальное из разрешённого: низкий CRF и неспешный пресет; потолок Instagram для видео 25 Мбит/с, для звука 128 кбит/с
   execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', raw, '-map', '0:v:0', '-map', '0:a:0?',
-    '-c:v', 'libx264', '-preset', 'medium', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-crf', '20', '-maxrate', '12M', '-bufsize', '24M',
+    '-c:v', 'libx264', '-preset', 'slow', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-crf', '14', '-maxrate', '24M', '-bufsize', '48M',
     '-g', '120', '-keyint_min', '60', '-sc_threshold', '0', '-flags', '+cgop',
     '-c:a', 'aac', '-b:a', '128k', '-ar', '48000', '-ac', '2', '-movflags', '+faststart', video]);
   fs.rmSync(raw);
   const probe = JSON.parse(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'stream=codec_type,codec_name,width,height,r_frame_rate:format=duration,size', '-of', 'json', video]).toString());
   log('Готово:', JSON.stringify(probe));
+  const dur = +probe.format.duration;
+  if (!(dur > 3 && dur <= MAXS + 0.5)) throw new Error(`Длина готового видео ${dur.toFixed(1)} с, а допустимо до ${MAXS} с.`);
   let cover = null;
   if (coverB64) { cover = 'v/' + name + '.jpg'; fs.writeFileSync(path.join(SITE, cover), Buffer.from(coverB64, 'base64')); }
 
@@ -176,9 +235,9 @@ async function main() {
   writeJSON(path.join(OUT, 'post.json'), { video: 'v/' + name + '.mp4', cover, caption: text, title: caption.title, sel, mode, seconds: plan.seconds, seed: plan.seed, createdAt: new Date().toISOString() });
 
   const next = { ...state, history: [...state.history, { date, sel, mode, seed: plan.seed, video: name + '.mp4' }].slice(-200) };
-  if (T.enabled) next.tournament = tourAfter;
+  if (tourMode) next.tournament = tourAfter;
   writeJSON(path.join(OUT, 'state.next.json'), next);
-  summary(`### Ролик готов\n- Страны: ${sel.map(id => byId[id] ? byId[id].en : id).join(' vs ')}\n- Режим: ${mode}, длина ≈ ${Math.round(plan.seconds)} с\n- Файл: \`${name}.mp4\`\n\n**Подпись:**\n\n${text.replace(/\n/g, '  \n')}\n`);
+  summary(`### Ролик готов\n- Страны: ${sel.map(id => byId[id] ? byId[id].en : id).join(' vs ')}\n- Режим: ${mode}${tourMode ? ' (турнир «' + tour.name + '»)' : ''}, длина ≈ ${Math.round(plan.seconds)} с\n- Файл: \`${name}.mp4\`\n\n**Подпись:**\n\n${text.replace(/\n/g, '  \n')}\n`);
   log('Всё готово');
 }
 

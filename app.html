@@ -2517,7 +2517,7 @@ async function recordOffline(){
   const w=cv.width,h=cv.height,done=()=>{recording=false;bar.classList.remove('on');setBusy(false)};
   const cands=[['avc1.640032','avc'],['avc1.4d0032','avc'],['avc1.42E032','avc'],['vp09.00.40.08','vp9']];
   let pick=null;
-  for(const[codec,mc]of cands){try{const c={codec,width:w,height:h,bitrate:w>800?7e6:4e6,framerate:FPS};if((await VideoEncoder.isConfigSupported(c)).supported){pick={c,mc};break}}catch(e){}}
+  for(const[codec,mc]of cands){try{const c={codec,width:w,height:h,bitrate:w>800?(st.vbr||7e6):4e6,framerate:FPS};if((await VideoEncoder.isConfigSupported(c)).supported){pick={c,mc};break}}catch(e){}}
   if(!pick){done();startPlay(true);return}
   let ac=null,sndInfo='';
   const wantSnd=st.snd!=='off';
@@ -2616,6 +2616,7 @@ function drawCoverWho(g,ids){
   for(const q of pos)glow(g,q.x,q.y,r*2.5,rgb(BY[q.id].c),.5);
   g.textAlign='center';g.textBaseline='alphabetic';fit(g,L.q,W-110,210,900);
   g.shadowColor='rgba(255,200,60,.6)';g.shadowBlur=46;g.fillStyle='#ffd23c';g.fillText(L.q,CX,y0-r-170);g.shadowBlur=0;
+  const tc=tourCtxNow();if(tc){const lab=((tour.name||'').toUpperCase()+' · '+tLabel(TL(),tc.r,tc.m).toUpperCase());g.fillStyle='#cfd8ea';fit(g,lab,W-110,44,800);g.fillText(lab,CX,y0-r-170-170)}
   for(const q of pos){const C=BY[q.id];flagDot(g,q.id,q.x,q.y,r);
     g.fillStyle='#fff';g.textAlign='center';fit(g,cname(C).toUpperCase(),2*r+gap-8,46,800);g.fillText(cname(C).toUpperCase(),q.x,q.y+r+66);
     if(!q.last){g.fillStyle='#ffd23c';g.font=`900 ${gap>=100?44:36}px ${FNT}`;g.fillText('VS',q.x+r+gap/2,q.y+12)}}
@@ -2634,6 +2635,7 @@ window.FlagBattle={
     if(o.music)st.music=o.music;if(o.snd)st.snd=o.snd;
     if(o.wm!=null)st.wm=String(o.wm);if(o.title!=null)st.title=String(o.title);
     if(o.scale)st.scale=+o.scale;
+    if(o.bitrate!=null)st.vbr=Math.max(2e6,Math.min(40e6,+o.bitrate||7e6));
     if(o.ad!=null){st.ad.on=!!(o.ad&&o.ad.on);if(o.ad&&o.ad.kind&&AD_PRESETS[o.ad.kind]){st.ad.kind=o.ad.kind;Object.assign(st.ad,AD_PRESETS[o.ad.kind])}}
     if(o.tour!==undefined)tour=o.tour?Object.assign({v:1,outro:true,shuffle:false,src:'all',phase:'live'},JSON.parse(JSON.stringify(o.tour))):null;
     if(Array.isArray(o.sel)){const q=o.sel.filter(i=>BY[i]);if(q.length>=2)st.sel=q.slice(0,8)}
