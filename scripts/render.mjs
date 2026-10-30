@@ -6,6 +6,32 @@ import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright';
 import { ROOT, OUT, SITE, loadConfig, loadState, writeJSON, pick, shuffle, setOutput, summary } from './lib.mjs';
 
+// Подбор стран: либо готовая тематическая тройка (соперничества, общая история), либо случайная из списков «популярных».
+function pickCurated(P, history, countries, [range]) {
+  const known = new Set(countries.map(c => c.id));
+  const ok = ids => ids.every(i => known.has(i));
+  const key = ids => ids.slice().sort().join(',');
+  const recent = new Set(history.slice(-60).map(h => key(h.sel || [])));
+  const bad = P.neverTogether || [];
+  const clash = ids => bad.some(([a, b]) => ids.includes(a) && ids.includes(b));
+  const sets = (P.sets || []).filter(ok);
+  const [a, b] = (range || [3, 3]).map(Number), lo = Math.max(2, Math.min(8, a || 3)), hi = Math.max(lo, Math.min(8, b || lo));
+  const europe = (P.europe || []).filter(i => known.has(i)), world = (P.world || []).filter(i => known.has(i));
+  if (sets.length && Math.random() < (P.setChance ?? 0.45)) {
+    const fresh = sets.filter(s => !recent.has(key(s)));
+    if (fresh.length) return shuffle(pick(fresh).slice());
+  }
+  for (let k = 0; k < 200; k++) {
+    const n = lo + Math.floor(Math.random() * (hi - lo + 1)), ids = [];
+    for (let t = 0; t < 50 && ids.length < n; t++) {
+      const src = (Math.random() < (P.europeShare ?? 0.65) ? europe : world.length ? world : europe);
+      const id = pick(src); if (!ids.includes(id)) ids.push(id);
+    }
+    if (ids.length === n && !clash(ids) && !recent.has(key(ids))) return ids;
+  }
+  throw new Error('Не удалось подобрать страны: проверь списки picks в config.json.');
+}
+
 async function main() {
   const cfg = loadConfig();
   const state = loadState();
@@ -14,6 +40,15 @@ async function main() {
     summary('### Расписание на паузе\nВ `config.json` стоит `"autoPublish": false`, поэтому ролик не делался и не публиковался.\nЧтобы включить, поменяй на `true`.');
     setOutput('skip', 'true');
     return;
+  }
+  if (process.env.GITHUB_EVENT_NAME === 'schedule' && cfg.startDate) {
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: cfg.timezone || 'Asia/Baku' }).format(new Date());   // ГГГГ-ММ-ДД
+    if (today < cfg.startDate) {
+      console.log(`Публикации по расписанию начнутся с ${cfg.startDate} (сейчас ${today}). Этот запуск ничего не делает.`);
+      summary(`### Ещё рано\nПубликации по расписанию начнутся с ${cfg.startDate} (в config.json поле \`startDate\`). Сейчас ${today}.`);
+      setOutput('skip', 'true');
+      return;
+    }
   }
   const AD = String(cfg.ad || 'off').toLowerCase();
   if (!['off', 'musor', 'vpn'].includes(AD)) throw new Error(`В config.json "ad" может быть "off", "musor" или "vpn" (сейчас "${cfg.ad}").`);
@@ -71,6 +106,9 @@ async function main() {
     tour.cur = next;
     sel = next.r === 0 ? [tour.ids[2 * next.m], tour.ids[2 * next.m + 1]] : [tour.W[next.r - 1][2 * next.m], tour.W[next.r - 1][2 * next.m + 1]];
     log(`Матч турнира: раунд ${next.r + 1}, пара ${next.m + 1}: ${sel.join(' vs ')}`);
+  } else if (cfg.picks) {
+    sel = pickCurated(cfg.picks, state.history, countries, [cfg.countriesPerVideo]);
+    log(`Страны: ${sel.join(', ')}`);
   } else {
     const pool = poolFor(cfg.groups && cfg.groups.length ? cfg.groups : ['countries']);
     const [a, b] = (cfg.countriesPerVideo || [2, 3]).map(Number);
@@ -102,12 +140,12 @@ async function main() {
   });
   log('Видео записано');
   const caption = await page.evaluate(() => window.FlagBattle.caption());
-  const coverB64 = cfg.cover === false ? null : await page.evaluate(async () => {
-    const b = await window.FlagBattle.cover(); if (!b) return null;
+  const coverB64 = cfg.cover === false ? null : await page.evaluate(async style => {
+    const b = await window.FlagBattle.cover({ style }); if (!b) return null;
     const u = new Uint8Array(await b.arrayBuffer()); let s = '';
     for (let i = 0; i < u.length; i += 32768) s += String.fromCharCode.apply(null, u.subarray(i, i + 32768));
     return btoa(s);
-  });
+  }, cfg.coverStyle === 'frame' ? 'frame' : 'who');
   const tourAfter = await page.evaluate(() => window.FlagBattle.tourState());
   await browser.close();
 

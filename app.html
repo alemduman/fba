@@ -2605,6 +2605,21 @@ $('#adLogo').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return
   im.onerror=()=>URL.revokeObjectURL(u);im.src=u};
 $('#adLogoClear').onclick=()=>{$('#adLogo').value='';try{localStorage.removeItem('flagbattle_logo')}catch(x){}setLogo(DEFAULT_LOGO)};
 syncKind();buildChips();applyColors();buildPub();applyScale();$('#adState').textContent=st.ad.on?'включена':'выключена';
+/* обложка Reels: крупные флаги участников и вопрос «WHO WINS?». Важное держим в центре: сетка профиля обрезает кадр до 3:4 */
+function drawCoverWho(g,ids){
+  const L=LT[st.lang]||LT.en,n=ids.length,rows=n<=4?[ids]:[ids.slice(0,Math.ceil(n/2)),ids.slice(Math.ceil(n/2))];
+  let per=Math.max(...rows.map(r=>r.length)),gap=per>=3?70:110,r=Math.min(n<=2?170:n===3?140:n===4?112:104,Math.floor((W-100-gap*(per-1))/(2*per)));
+  const rowH=2*r+130;let y0=rows.length===1?1010:1010-(rows.length-1)*rowH/2;
+  g.save();g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;g.shadowBlur=0;g.fillStyle='#05070d';g.fillRect(0,0,W,H);
+  const pos=[];rows.forEach((row,ri)=>{const y=y0+ri*rowH,tot=row.length*2*r+(row.length-1)*gap,x0=CX-tot/2+r;row.forEach((id,i)=>pos.push({id,x:x0+i*(2*r+gap),y,i,last:i===row.length-1}))});
+  if(n===3){r=188;const ya=850,yb=ya+2*r+150;pos.length=0;pos.push({id:ids[0],x:CX-r-34,y:ya,last:false},{id:ids[1],x:CX+r+34,y:ya,last:true},{id:ids[2],x:CX,y:yb,last:true});y0=ya}
+  for(const q of pos)glow(g,q.x,q.y,r*2.5,rgb(BY[q.id].c),.5);
+  g.textAlign='center';g.textBaseline='alphabetic';fit(g,L.q,W-110,210,900);
+  g.shadowColor='rgba(255,200,60,.6)';g.shadowBlur=46;g.fillStyle='#ffd23c';g.fillText(L.q,CX,y0-r-170);g.shadowBlur=0;
+  for(const q of pos){const C=BY[q.id];flagDot(g,q.id,q.x,q.y,r);
+    g.fillStyle='#fff';g.textAlign='center';fit(g,cname(C).toUpperCase(),2*r+gap-8,46,800);g.fillText(cname(C).toUpperCase(),q.x,q.y+r+66);
+    if(!q.last){g.fillStyle='#ffd23c';g.font=`900 ${gap>=100?44:36}px ${FNT}`;g.fillText('VS',q.x+r+gap/2,q.y+12)}}
+  g.restore()}
 /* ---------- программный доступ: им пользуется скрипт автопостинга (GitHub Actions), в обычной работе не мешает ---------- */
 window.FlagBattle={
   ready:false,
@@ -2631,8 +2646,10 @@ window.FlagBattle={
   async plan(){stop();await makePlan();stop();const p=st.plan;return p?{seed:p.seed,ts:p.ts,seconds:(p.frames+tourOutro())/FPS,winner:p.winner}:null},
   async record(){if(!st.plan)throw new Error('нет партии');pubAfter=false;lastBlob=null;await recordOffline();if(!lastBlob)throw new Error('видео не записалось');return lastBlob.blob},
   caption:()=>({title:$('#pubTitle').value,text:$('#pubText').value}),
-  async cover(){if(!st.plan)return null;await ensureFlags(st.sel);const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
-    const s=newSim(cfg(st.plan.ts),st.plan.seed,false);s.cover=true;for(let i=0;i<40;i++)s.step();render(g,s,1,autoTitle());return new Promise(r=>c.toBlob(r,'image/jpeg',.92))},
+  async cover(o){if(!st.plan)return null;await ensureFlags(st.sel);const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+    if(o&&o.style==='who')drawCoverWho(g,st.sel);
+    else{const s=newSim(cfg(st.plan.ts),st.plan.seed,false);s.cover=true;for(let i=0;i<40;i++)s.step();render(g,s,1,autoTitle())}
+    return new Promise(r=>c.toBlob(r,'image/jpeg',.92))},
   tourState:()=>tour?JSON.parse(JSON.stringify(tour)):null
 };
 const boot=()=>makePlan();

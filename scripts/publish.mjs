@@ -49,7 +49,18 @@ async function main() {
 
   if (DRY) {
     console.log('Проверочный запуск: ролик НЕ публикуется. Посмотри видео по ссылке выше.');
-    summary(`### Проверочный запуск\nРолик не публиковался.\n\n- Видео: ${videoUrl}${coverUrl ? `\n- Обложка: ${coverUrl}` : ''}\n`);
+    let access = 'токен не задан, доступ к Instagram не проверялся';
+    if (TOKEN) {
+      // Ничего не публикуем: только проверяем, что токен рабочий и у него есть право на публикацию
+      const uid0 = (process.env.IG_USER_ID || '').trim();
+      if (!uid0) { console.error('❌ Нет секрета IG_USER_ID: числовой ID аккаунта Instagram (он начинается на 17841).'); process.exit(1); }
+      const acc = await api('GET', `${API}/${uid0}`, { fields: 'username' });
+      const lim = await api('GET', `${API}/${uid0}/content_publishing_limit`, { fields: 'quota_usage,config' });
+      const q = lim.data && lim.data[0] || {};
+      access = `аккаунт @${acc.username || '?'}, право на публикацию есть, использовано ${q.quota_usage ?? '?'} из ${q.config && q.config.quota_total || '?'} публикаций за сутки`;
+      console.log('Доступ к Instagram проверен: ' + access);
+    } else console.log('Секрет IG_TOKEN не задан: доступ к Instagram не проверялся.');
+    summary(`### Проверочный запуск\nРолик не публиковался.\n\n- Видео: ${videoUrl}${coverUrl ? `\n- Обложка: ${coverUrl}` : ''}\n- Instagram: ${access}\n`);
     setOutput('posted', 'false');
     return;
   }
