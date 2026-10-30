@@ -79,7 +79,7 @@ async function main() {
   if (!['off', 'musor', 'vpn'].includes(AD)) throw new Error(`В config.json "ad" может быть "off", "musor" или "vpn" (сейчас "${cfg.ad}").`);
   fs.rmSync(OUT, { recursive: true, force: true });
   fs.mkdirSync(path.join(SITE, 'v'), { recursive: true });
-  fs.writeFileSync(path.join(SITE, 'index.html'), '<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>flag battle</title>');
+  fs.cpSync(path.join(ROOT, 'static'), SITE, { recursive: true });
 
   const t0 = Date.now();
   const log = (...a) => console.log(`[${((Date.now() - t0) / 1000).toFixed(1)} с]`, ...a);
