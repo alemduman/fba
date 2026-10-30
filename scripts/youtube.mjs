@@ -9,6 +9,11 @@ async function main() {
   const yt = { enabled: true, privacy: 'public', category: '24', ...(cfg.youtube || {}) };
   const id = (process.env.YT_CLIENT_ID || '').trim(), secret = (process.env.YT_CLIENT_SECRET || '').trim(), refresh = (process.env.YT_REFRESH_TOKEN || '').trim();
   if (!yt.enabled) { console.log('YouTube выключен в config.json.'); return; }
+  // Не раньше fromHour по времени cfg.timezone (по умолчанию 12:00): тогда из семи запусков в день на YouTube уходят шесть
+  if (process.env.GITHUB_EVENT_NAME === 'schedule' && yt.fromHour != null) {
+    const h = +new Intl.DateTimeFormat('en-GB', { hour: '2-digit', hour12: false, timeZone: cfg.timezone || 'Asia/Baku' }).format(new Date());
+    if (h < +yt.fromHour) { console.log(`Сейчас ${h}:xx, YouTube начинается с ${yt.fromHour}:00 — этот ролик на YouTube не идёт.`); return; }
+  }
   if (!id || !secret || !refresh) { console.log('Секреты YouTube не заданы — шаг пропущен.'); return; }
   const post = readJSON(path.join(OUT, 'post.json'), null);
   if (!post) { console.error('Нет out/post.json'); process.exit(1); }

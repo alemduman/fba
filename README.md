@@ -181,7 +181,7 @@ Instagram разрешает до 100 публикаций через API в с�
 4. developers.google.com/oauthplayground → шестерёнка → «Use your own OAuth credentials» → вставить их → слева ввести scope `https://www.googleapis.com/auth/youtube.upload` → Authorize APIs → войти в аккаунт канала → Exchange authorization code for tokens → скопировать **Refresh token**.
 5. Добавить три секрета в GitHub. Запустить «Проверка» вручную: в логе будет «Канал YouTube: …».
 
-Ограничения: квота YouTube API по умолчанию около 6 загрузок в сутки; пока проект не прошёл аудит Google, ролики могут принудительно становиться приватными. Настройки в `config.json` → `youtube` (`enabled`, `privacy`, `category`).
+Ограничения: квота YouTube API по умолчанию около 6 загрузок в сутки; пока проект не прошёл аудит Google, ролики могут принудительно становиться приватными. Настройки в `config.json` → `youtube` (`enabled`, `privacy`, `category`, `fromHour`: с какого часа по Баку выкладывать на YouTube; сейчас 12, поэтому ролик 10:07 идёт только в Instagram, а остальные шесть и туда, и туда).
 
 ## Токен и его срок
 

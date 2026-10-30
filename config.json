@@ -541,6 +541,7 @@
  "youtube": {
   "enabled": true,
   "privacy": "public",
-  "category": "24"
+  "category": "24",
+  "fromHour": 12
  }
 }
