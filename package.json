@@ -1,0 +1,13 @@
+{
+  "name": "flag-battle-autopost",
+  "private": true,
+  "type": "module",
+  "description": "Автопостинг роликов «Битва флагов» в Instagram через GitHub Actions",
+  "scripts": {
+    "render": "node scripts/render.mjs",
+    "publish-reel": "node scripts/publish.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.56.0"
+  }
+}
