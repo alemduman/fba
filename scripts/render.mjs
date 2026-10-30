@@ -75,6 +75,19 @@ async function main() {
       return;
     }
   }
+  // Защита от опоздавших запусков: GitHub иногда запускает расписание с задержкой в часы. Если запуск опоздал больше maxDelayMinutes
+  // относительно ближайшего слота из schedule.hours, он ничего не делает (ролик не выходит не вовремя).
+  if (process.env.GITHUB_EVENT_NAME === 'schedule' && cfg.schedule && Array.isArray(cfg.schedule.hours) && cfg.schedule.hours.length) {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(NOW).map(x => [x.type, x.value]));
+    const m = (+parts.hour % 24) * 60 + +parts.minute, min = +cfg.schedule.minute || 0, maxD = +cfg.schedule.maxDelayMinutes || 120;
+    const ok = cfg.schedule.hours.some(h => [-1440, 0, 1440].some(sh => { const d = m + sh - (h * 60 + min); return d >= -20 && d <= maxD; }));
+    if (!ok) {
+      console.log(`Запуск пришёл в ${parts.hour}:${parts.minute} по ${TZ}, это слишком далеко от слотов расписания (допустимое опоздание ${maxD} мин). Пропускаем.`);
+      summary(`### Опоздавший запуск пропущен\nЗапуск пришёл в ${parts.hour}:${parts.minute} (${TZ}), а ближайший слот был больше ${maxD} минут назад. Ролик не делался и не публиковался.`);
+      setOutput('skip', 'true');
+      return;
+    }
+  }
   const AD = String(cfg.ad || 'off').toLowerCase();
   if (!['off', 'musor', 'vpn'].includes(AD)) throw new Error(`В config.json "ad" может быть "off", "musor" или "vpn" (сейчас "${cfg.ad}").`);
   fs.rmSync(OUT, { recursive: true, force: true });
