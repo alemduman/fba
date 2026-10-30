@@ -25,12 +25,9 @@ async function main() {
   }
   const auth = { Authorization: 'Bearer ' + tj.access_token };
 
-  // 2. проверка канала
-  const ch = await (await fetch('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true', { headers: auth })).json();
-  const name = ch.items && ch.items[0] && ch.items[0].snippet.title;
-  if (!name) throw new Error('Не удалось получить канал YouTube: ' + JSON.stringify(ch.error || ch).slice(0, 300));
-  console.log('Канал YouTube: ' + name); summary(`### YouTube: канал «${name}» найден\n`);
-  if (DRY) { console.log('Проверочный запуск: на YouTube НЕ загружаем.'); summary(`- YouTube: доступ есть, канал «${name}»\n`); return; }
+  // 2. Токен принят Google. Данные канала читать не нужно (для этого нужно другое право), для загрузки хватает youtube.upload.
+  console.log('Токен YouTube действителен.');
+  if (DRY) { console.log('Проверочный запуск: на YouTube НЕ загружаем.'); summary('### YouTube: токен действителен, всё готово к загрузке\n'); return; }
 
   // 3. название и описание
   const base = (post.title || post.caption.split('\n')[0]).replace(/\s+/g, ' ').trim();
