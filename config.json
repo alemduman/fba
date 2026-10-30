@@ -18,7 +18,7 @@
   "groups": ["eu"],
   "include": [],
   "exclude": [],
-  "tournament": {"enabled": true, "weekday": "sat", "size": 8, "teams": "rivals", "length": "18-25", "name": "", "outro": true},
+  "tournament": {"enabled": true, "weekday": "thu", "size": 8, "teams": "rivals", "length": "18-25", "name": "", "outro": true},
   "cover": true,
   "shareToFeed": true,
   "extraHashtags": [],
