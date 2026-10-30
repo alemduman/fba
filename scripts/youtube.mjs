@@ -21,7 +21,7 @@ async function main() {
   const DRY = /^(1|true|yes)$/i.test(process.env.DRY_RUN || '');
 
   // 1. access token из refresh token
-  const tr = await fetch('https://oauth2.googleapis.com/token', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  const tr = await fetch((process.env.YT_OAUTH_URL || 'https://oauth2.googleapis.com/token'), { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({ client_id: id, client_secret: secret, refresh_token: refresh, grant_type: 'refresh_token' }) });
   const tj = await tr.json().catch(() => ({}));
   if (!tr.ok || !tj.access_token) {
@@ -43,7 +43,7 @@ async function main() {
 
   // 4. resumable upload
   const size = fs.statSync(file).size;
-  const init = await fetch('https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status', { method: 'POST',
+  const init = await fetch((process.env.YT_UPLOAD_URL || 'https://www.googleapis.com/upload/youtube/v3/videos') + '?uploadType=resumable&part=snippet,status', { method: 'POST',
     headers: { ...auth, 'Content-Type': 'application/json; charset=UTF-8', 'X-Upload-Content-Type': 'video/mp4', 'X-Upload-Content-Length': String(size) }, body: JSON.stringify(meta) });
   if (!init.ok) {
     const e = await init.json().catch(() => ({}));

@@ -238,13 +238,15 @@ async function main() {
   if (coverB64) { cover = 'v/' + name + '.jpg'; fs.writeFileSync(path.join(SITE, cover), Buffer.from(coverB64, 'base64')); }
 
   // Instagram разрешает не больше 5 хэштегов: свои из extraHashtags идут первыми, остальные места занимают хэштеги приложения
+  const tagOf = id => '#' + (byId[id] ? byId[id].en : id).toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const winTag = plan.winner ? tagOf(plan.winner) : null;
   let text = caption.text;
   // Текст для охвата: короткий призыв выбрать победителя в комментариях + широкие хэштеги (до 5, лимит Instagram).
   {
     const paras = text.split(/\n\s*\n/).map(x => x.trim()).filter(Boolean);
     const body = paras.filter(x => !/^Cut every rival/i.test(x) && !/^Follow for/i.test(x) && !/^#\S+(\s+#\S+)*$/.test(x));
-    if (body.length < paras.length) {
-      const tags = sel.slice(0, 2).map(id => '#' + (byId[id] ? byId[id].en : id).toLowerCase().replace(/[^a-z0-9]+/g, ''));
+    if (!tourMode && body.length < paras.length) {
+      const tags = [plan.winner, ...sel.filter(id => id !== plan.winner)].slice(0, 2).map(tagOf);
       text = [...body, 'Which flag survives? Pick your winner in the comments 👇', 'Follow for a new battle every 2 hours ⚔️', [...tags, '#flagbattle', '#geography', '#countries'].join(' ')].join('\n\n');
     }
   }
@@ -253,6 +255,15 @@ async function main() {
     const lines = text.split('\n'), last = (lines[lines.length - 1] || '').trim();
     const appTags = /^#\S+(\s+#\S+)*$/.test(last) ? (lines.pop(), last.split(/\s+/)) : [];
     text = lines.join('\n').trimEnd() + '\n\n' + [...new Set([...extra, ...appTags])].slice(0, 5).join(' ');
+  }
+  // Хэштег победившей страны обязателен (в том числе в турнирных подписях): ставим его первым и держим лимит 5 хэштегов
+  if (winTag) {
+    const lines = text.split('\n'), last = (lines[lines.length - 1] || '').trim();
+    if (/^#\S+(\s+#\S+)*$/.test(last)) {
+      const tg = last.split(/\s+/).filter(t => t.toLowerCase() !== winTag);
+      lines[lines.length - 1] = [winTag, ...tg].slice(0, 5).join(' ');
+      text = lines.join('\n');
+    } else text = text.trimEnd() + '\n\n' + winTag;
   }
   writeJSON(path.join(OUT, 'post.json'), { video: 'v/' + name + '.mp4', cover, caption: text, title: caption.title, sel, mode, seconds: plan.seconds, seed: plan.seed, createdAt: new Date().toISOString() });
 
