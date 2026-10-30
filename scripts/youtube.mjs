@@ -29,7 +29,7 @@ async function main() {
   const ch = await (await fetch('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true', { headers: auth })).json();
   const name = ch.items && ch.items[0] && ch.items[0].snippet.title;
   if (!name) throw new Error('Не удалось получить канал YouTube: ' + JSON.stringify(ch.error || ch).slice(0, 300));
-  console.log('Канал YouTube: ' + name);
+  console.log('Канал YouTube: ' + name); summary(`### YouTube: канал «${name}» найден\n`);
   if (DRY) { console.log('Проверочный запуск: на YouTube НЕ загружаем.'); summary(`- YouTube: доступ есть, канал «${name}»\n`); return; }
 
   // 3. название и описание
@@ -57,4 +57,4 @@ async function main() {
   summary(`### Загружено на YouTube\n- ${url}\n`);
   setOutput('yt_posted', 'true');
 }
-main().catch(e => { console.error('❌ YouTube: ' + (e && e.message || e)); process.exit(1); });
+main().catch(e => { const m = '❌ YouTube: ' + (e && e.message || e); console.error(m); summary('### ' + m + '\n'); process.exit(1); });
