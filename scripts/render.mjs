@@ -224,6 +224,8 @@ async function main() {
   let cover = null;
   if (coverB64) { cover = 'v/' + name + '.jpg'; fs.writeFileSync(path.join(SITE, cover), Buffer.from(coverB64, 'base64')); }
 
+  // Instagram разрешает не больше 5 хэштегов: свои из extraHashtags идут первыми, остальные места занимают хэштеги приложения
+  let text = caption.text;
   // Текст для охвата: короткий призыв выбрать победителя в комментариях + широкие хэштеги (до 5, лимит Instagram).
   {
     const paras = text.split(/\n\s*\n/).map(x => x.trim()).filter(Boolean);
@@ -233,8 +235,6 @@ async function main() {
       text = [...body, 'Which flag survives? Pick your winner in the comments 👇', 'Follow for a new battle every 2 hours ⚔️', [...tags, '#flagbattle', '#geography', '#countries'].join(' ')].join('\n\n');
     }
   }
-  // Instagram разрешает не больше 5 хэштегов: свои из extraHashtags идут первыми, остальные места занимают хэштеги приложения
-  let text = caption.text;
   const extra = (cfg.extraHashtags || []).map(t => '#' + String(t).trim().replace(/^#+/, '').replace(/\s+/g, '')).filter(t => t.length > 1);
   if (extra.length) {
     const lines = text.split('\n'), last = (lines[lines.length - 1] || '').trim();
