@@ -1,129 +1,546 @@
 {
-  "autoPublish": true,
-  "startDate": "2026-10-31",
-  "timezone": "Asia/Baku",
-  "language": "en",
-  "mode": "lines",
-  "speed": 290,
-  "lines": 40,
-  "ramp": 5,
-  "length": "20-29",
-  "maxSeconds": 30,
-  "recordBitrate": 20000000,
-  "music": "auto",
-  "sound": "all",
-  "watermark": "",
-  "ad": "off",
-  "countriesPerVideo": [3, 3],
-  "groups": ["eu"],
-  "include": [],
-  "exclude": [],
-  "tournament": {"enabled": true, "weekday": "thu", "size": 8, "teams": "rivals", "length": "18-25", "name": "", "outro": true},
-  "cover": true,
-  "shareToFeed": true,
-  "extraHashtags": [],
-  "login": "unified",
-  "apiVersion": "v26.0",
-  "coverStyle": "who",
-  "picks": {
-    "setChance": 0.45,
-    "europeShare": 0.65,
-    "sets": [
-      ["de", "fr", "it"],
-      ["gb", "de", "fr"],
-      ["es", "pt", "ma"],
-      ["es", "pt", "fr"],
-      ["nl", "be", "de"],
-      ["se", "no", "dk"],
-      ["fi", "se", "ee"],
-      ["pl", "de", "cz"],
-      ["rs", "hr", "si"],
-      ["hu", "ro", "at"],
-      ["at", "ch", "de"],
-      ["gr", "tr", "bg"],
-      ["tr", "az", "kz"],
-      ["ge", "tr", "az"],
-      ["gb", "ie", "is"],
-      ["ee", "lv", "lt"],
-      ["fr", "ru", "gb"],
-      ["gb", "es", "nl"],
-      ["it", "gr", "es"],
-      ["br", "ar", "uy"],
-      ["br", "ar", "de"],
-      ["co", "ve", "ec"],
-      ["cl", "pe", "bo"],
-      ["mx", "us", "ca"],
-      ["us", "cn", "ru"],
-      ["cn", "in", "us"],
-      ["ru", "cn", "in"],
-      ["us", "gb", "fr"],
-      ["jp", "kr", "cn"],
-      ["vn", "th", "id"],
-      ["sa", "ir", "tr"],
-      ["eg", "sa", "ae"],
-      ["eg", "ma", "dz"],
-      ["ma", "sn", "eg"],
-      ["ng", "gh", "sn"],
-      ["au", "nz", "gb"],
-      ["gb", "in", "au"],
-      ["pt", "br", "ao"],
-      ["es", "mx", "ar"],
-      ["fr", "dz", "ma"],
-      ["kz", "uz", "kg"],
-      ["ru", "ua", "by"],
-      ["az", "am", "ge"],
-      ["in", "pk", "cn"],
-      ["kr", "kp", "jp"],
-      ["il", "ir", "sa"],
-      ["rs", "xk", "al"]
-    ],
-    "pairs": [
-      ["de", "fr"],
-      ["gb", "fr"],
-      ["gb", "de"],
-      ["es", "pt"],
-      ["it", "fr"],
-      ["nl", "be"],
-      ["se", "dk"],
-      ["no", "se"],
-      ["pl", "de"],
-      ["rs", "hr"],
-      ["hu", "ro"],
-      ["gr", "tr"],
-      ["br", "ar"],
-      ["uy", "ar"],
-      ["co", "ve"],
-      ["cl", "pe"],
-      ["us", "cn"],
-      ["us", "ru"],
-      ["cn", "in"],
-      ["jp", "kr"],
-      ["sa", "ir"],
-      ["eg", "tr"],
-      ["ma", "dz"],
-      ["ng", "gh"],
-      ["au", "nz"],
-      ["mx", "us"],
-      ["pt", "br"],
-      ["es", "mx"],
-      ["fi", "se"],
-      ["ba", "rs"],
-      ["ch", "at"],
-      ["ie", "gb"],
-      ["ro", "bg"],
-      ["pl", "ua"],
-      ["ru", "ua"],
-      ["az", "am"],
-      ["il", "ir"],
-      ["in", "pk"],
-      ["kr", "kp"],
-      ["kz", "uz"],
-      ["ee", "lv"],
-      ["it", "es"],
-      ["ar", "de"]
-    ],
-    "europe": ["gb", "de", "fr", "it", "es", "pt", "nl", "be", "ch", "at", "se", "no", "dk", "fi", "ie", "pl", "cz", "hu", "ro", "gr", "tr", "rs", "hr", "ua", "bg", "sk", "si", "is", "lt", "lv", "ee", "ba", "al", "mk", "me", "cy", "mt", "lu"],
-    "world": ["us", "ca", "mx", "br", "ar", "co", "cl", "pe", "uy", "jp", "kr", "cn", "in", "vn", "th", "id", "au", "nz", "za", "eg", "ma", "ng", "sa", "ir", "ae", "qa", "kz", "az", "ge", "am", "ru", "by", "uz", "sn", "gh", "dz", "tn", "ke", "et", "cu", "jm", "pk"],
-    "neverTogether": []
-  }
+ "autoPublish": true,
+ "startDate": "2026-10-31",
+ "timezone": "Asia/Baku",
+ "language": "en",
+ "mode": "lines",
+ "speed": 290,
+ "lines": 40,
+ "ramp": 5,
+ "length": "20-29",
+ "maxSeconds": 30,
+ "recordBitrate": 20000000,
+ "music": "auto",
+ "sound": "all",
+ "watermark": "",
+ "ad": "off",
+ "countriesPerVideo": [
+  3,
+  3
+ ],
+ "groups": [
+  "eu"
+ ],
+ "include": [],
+ "exclude": [],
+ "tournament": {
+  "enabled": true,
+  "weekday": "thu",
+  "size": 8,
+  "teams": "rivals",
+  "length": "18-25",
+  "name": "",
+  "outro": true
+ },
+ "cover": true,
+ "shareToFeed": true,
+ "extraHashtags": [],
+ "login": "unified",
+ "apiVersion": "v26.0",
+ "coverStyle": "who",
+ "picks": {
+  "setChance": 0.45,
+  "europeShare": 0.65,
+  "sets": [
+   [
+    "de",
+    "fr",
+    "it"
+   ],
+   [
+    "gb",
+    "de",
+    "fr"
+   ],
+   [
+    "es",
+    "pt",
+    "ma"
+   ],
+   [
+    "es",
+    "pt",
+    "fr"
+   ],
+   [
+    "nl",
+    "be",
+    "de"
+   ],
+   [
+    "se",
+    "no",
+    "dk"
+   ],
+   [
+    "fi",
+    "se",
+    "ee"
+   ],
+   [
+    "pl",
+    "de",
+    "cz"
+   ],
+   [
+    "rs",
+    "hr",
+    "si"
+   ],
+   [
+    "hu",
+    "ro",
+    "at"
+   ],
+   [
+    "at",
+    "ch",
+    "de"
+   ],
+   [
+    "gr",
+    "tr",
+    "bg"
+   ],
+   [
+    "tr",
+    "az",
+    "kz"
+   ],
+   [
+    "ge",
+    "tr",
+    "az"
+   ],
+   [
+    "gb",
+    "ie",
+    "is"
+   ],
+   [
+    "ee",
+    "lv",
+    "lt"
+   ],
+   [
+    "fr",
+    "ru",
+    "gb"
+   ],
+   [
+    "gb",
+    "es",
+    "nl"
+   ],
+   [
+    "it",
+    "gr",
+    "es"
+   ],
+   [
+    "br",
+    "ar",
+    "uy"
+   ],
+   [
+    "br",
+    "ar",
+    "de"
+   ],
+   [
+    "co",
+    "ve",
+    "ec"
+   ],
+   [
+    "cl",
+    "pe",
+    "bo"
+   ],
+   [
+    "mx",
+    "us",
+    "ca"
+   ],
+   [
+    "us",
+    "cn",
+    "ru"
+   ],
+   [
+    "cn",
+    "in",
+    "us"
+   ],
+   [
+    "ru",
+    "cn",
+    "in"
+   ],
+   [
+    "us",
+    "gb",
+    "fr"
+   ],
+   [
+    "jp",
+    "kr",
+    "cn"
+   ],
+   [
+    "vn",
+    "th",
+    "id"
+   ],
+   [
+    "sa",
+    "ir",
+    "tr"
+   ],
+   [
+    "eg",
+    "sa",
+    "ae"
+   ],
+   [
+    "eg",
+    "ma",
+    "dz"
+   ],
+   [
+    "ma",
+    "sn",
+    "eg"
+   ],
+   [
+    "ng",
+    "gh",
+    "sn"
+   ],
+   [
+    "au",
+    "nz",
+    "gb"
+   ],
+   [
+    "gb",
+    "in",
+    "au"
+   ],
+   [
+    "pt",
+    "br",
+    "ao"
+   ],
+   [
+    "es",
+    "mx",
+    "ar"
+   ],
+   [
+    "fr",
+    "dz",
+    "ma"
+   ],
+   [
+    "kz",
+    "uz",
+    "kg"
+   ],
+   [
+    "ru",
+    "ua",
+    "by"
+   ],
+   [
+    "az",
+    "am",
+    "ge"
+   ],
+   [
+    "in",
+    "pk",
+    "cn"
+   ],
+   [
+    "kr",
+    "kp",
+    "jp"
+   ],
+   [
+    "il",
+    "ir",
+    "sa"
+   ],
+   [
+    "rs",
+    "xk",
+    "al"
+   ]
+  ],
+  "pairs": [
+   [
+    "de",
+    "fr"
+   ],
+   [
+    "gb",
+    "fr"
+   ],
+   [
+    "gb",
+    "de"
+   ],
+   [
+    "es",
+    "pt"
+   ],
+   [
+    "it",
+    "fr"
+   ],
+   [
+    "nl",
+    "be"
+   ],
+   [
+    "se",
+    "dk"
+   ],
+   [
+    "no",
+    "se"
+   ],
+   [
+    "pl",
+    "de"
+   ],
+   [
+    "rs",
+    "hr"
+   ],
+   [
+    "hu",
+    "ro"
+   ],
+   [
+    "gr",
+    "tr"
+   ],
+   [
+    "br",
+    "ar"
+   ],
+   [
+    "uy",
+    "ar"
+   ],
+   [
+    "co",
+    "ve"
+   ],
+   [
+    "cl",
+    "pe"
+   ],
+   [
+    "us",
+    "cn"
+   ],
+   [
+    "us",
+    "ru"
+   ],
+   [
+    "cn",
+    "in"
+   ],
+   [
+    "jp",
+    "kr"
+   ],
+   [
+    "sa",
+    "ir"
+   ],
+   [
+    "eg",
+    "tr"
+   ],
+   [
+    "ma",
+    "dz"
+   ],
+   [
+    "ng",
+    "gh"
+   ],
+   [
+    "au",
+    "nz"
+   ],
+   [
+    "mx",
+    "us"
+   ],
+   [
+    "pt",
+    "br"
+   ],
+   [
+    "es",
+    "mx"
+   ],
+   [
+    "fi",
+    "se"
+   ],
+   [
+    "ba",
+    "rs"
+   ],
+   [
+    "ch",
+    "at"
+   ],
+   [
+    "ie",
+    "gb"
+   ],
+   [
+    "ro",
+    "bg"
+   ],
+   [
+    "pl",
+    "ua"
+   ],
+   [
+    "ru",
+    "ua"
+   ],
+   [
+    "az",
+    "am"
+   ],
+   [
+    "il",
+    "ir"
+   ],
+   [
+    "in",
+    "pk"
+   ],
+   [
+    "kr",
+    "kp"
+   ],
+   [
+    "kz",
+    "uz"
+   ],
+   [
+    "ee",
+    "lv"
+   ],
+   [
+    "it",
+    "es"
+   ],
+   [
+    "ar",
+    "de"
+   ]
+  ],
+  "europe": [
+   "gb",
+   "de",
+   "fr",
+   "it",
+   "es",
+   "pt",
+   "nl",
+   "be",
+   "ch",
+   "at",
+   "se",
+   "no",
+   "dk",
+   "fi",
+   "ie",
+   "pl",
+   "cz",
+   "hu",
+   "ro",
+   "gr",
+   "tr",
+   "rs",
+   "hr",
+   "ua",
+   "bg",
+   "sk",
+   "si",
+   "is",
+   "lt",
+   "lv",
+   "ee",
+   "ba",
+   "al",
+   "mk",
+   "me",
+   "cy",
+   "mt",
+   "lu"
+  ],
+  "world": [
+   "us",
+   "ca",
+   "mx",
+   "br",
+   "ar",
+   "co",
+   "cl",
+   "pe",
+   "uy",
+   "jp",
+   "kr",
+   "cn",
+   "in",
+   "vn",
+   "th",
+   "id",
+   "au",
+   "nz",
+   "za",
+   "eg",
+   "ma",
+   "ng",
+   "sa",
+   "ir",
+   "ae",
+   "qa",
+   "kz",
+   "az",
+   "ge",
+   "am",
+   "ru",
+   "by",
+   "uz",
+   "sn",
+   "gh",
+   "dz",
+   "tn",
+   "ke",
+   "et",
+   "cu",
+   "jm",
+   "pk"
+  ],
+  "neverTogether": []
+ },
+ "youtube": {
+  "enabled": true,
+  "privacy": "public",
+  "category": "24"
+ }
 }

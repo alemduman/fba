@@ -171,6 +171,18 @@ Instagram разрешает до 100 публикаций через API в с�
 
 Ход турнира хранится в `state.json`. Если публикация матча не удалась, он сыграется заново при следующем запуске, а если турнир не закончился за день, он дойдёт до финала в следующих слотах. Чтобы сбросить турнир, поставьте в `state.json` `"tournament": null`.
 
+## YouTube Shorts (по желанию)
+
+Тот же ролик после Instagram загружается на YouTube. Включается тремя секретами: `YT_CLIENT_ID`, `YT_CLIENT_SECRET`, `YT_REFRESH_TOKEN`. Без них шаг пропускается.
+
+1. console.cloud.google.com → создать проект → «APIs & Services» → включить **YouTube Data API v3**.
+2. «OAuth consent screen» → External → заполнить название и почту → добавить scope `youtube.upload` → **Publish app (In production)**, иначе токен живёт 7 дней.
+3. «Credentials» → Create credentials → OAuth client ID → тип **Web application**, Authorized redirect URI: `https://developers.google.com/oauthplayground`. Скопировать Client ID и Client secret.
+4. developers.google.com/oauthplayground → шестерёнка → «Use your own OAuth credentials» → вставить их → слева ввести scope `https://www.googleapis.com/auth/youtube.upload` → Authorize APIs → войти в аккаунт канала → Exchange authorization code for tokens → скопировать **Refresh token**.
+5. Добавить три секрета в GitHub. Запустить «Проверка» вручную: в логе будет «Канал YouTube: …».
+
+Ограничения: квота YouTube API по умолчанию около 6 загрузок в сутки; пока проект не прошёл аудит Google, ролики могут принудительно становиться приватными. Настройки в `config.json` → `youtube` (`enabled`, `privacy`, `category`).
+
 ## Токен и его срок
 
 Токен системного пользователя, созданный со сроком «Никогда», продлевать не нужно. Если Meta не дала такой срок, токен живёт 60 дней: за неделю до конца создайте новый (шаг 2, пункт 7) и замените секрет `IG_TOKEN` (**Settings → Secrets and variables → Actions → IG_TOKEN → Update**). Когда токен истечёт, запуск остановится с ошибкой `код 190`, и вам придёт письмо.
