@@ -76,6 +76,16 @@ async function main() {
     }
   }
   let SLOT = '';
+  // Если ролик (в том числе запущенный вручную) вышел меньше 50 минут назад, запуск по расписанию его не дублирует
+  if (process.env.GITHUB_EVENT_NAME === 'schedule') {
+    const lastP = [...state.history].reverse().find(x => x.posted);
+    if (lastP && NOW.getTime() - Date.parse(lastP.posted) < 50 * 60000 && NOW.getTime() >= Date.parse(lastP.posted)) {
+      console.log(`Предыдущий ролик вышел ${lastP.posted}, это меньше 50 минут назад. Запуск по расписанию пропускаем, чтобы не было дубля.`);
+      summary('### Дубль пропущен\nРолик вышел меньше 50 минут назад (например, вручную), поэтому этот запуск ничего не делает.');
+      setOutput('skip', 'true');
+      return;
+    }
+  }
   // Защита от опоздавших запусков: GitHub иногда запускает расписание с задержкой в часы. Если запуск опоздал больше maxDelayMinutes
   // относительно ближайшего слота из schedule.hours, он ничего не делает (ролик не выходит не вовремя).
   if (process.env.GITHUB_EVENT_NAME === 'schedule' && cfg.schedule && Array.isArray(cfg.schedule.hours) && cfg.schedule.hours.length) {
