@@ -55,6 +55,15 @@ async function main() {
   const up = await fetch(loc, { method: 'PUT', headers: { 'Content-Type': 'video/mp4', 'Content-Length': String(size) }, body: fs.readFileSync(file) });
   const vj = await up.json().catch(() => ({}));
   if (!up.ok || !vj.id) throw new Error('Загрузка не удалась: ' + JSON.stringify(vj.error || vj).slice(0, 300));
+  // Обложка: та же картинка «WHO WINS?», что и в Instagram. Для своих обложек канал должен быть подтверждён по телефону; при отказе просто продолжаем.
+  if (post.cover) {
+    try {
+      const img = fs.readFileSync(path.join(OUT, 'site', post.cover));
+      const tr2 = await fetch((process.env.YT_THUMB_URL || 'https://www.googleapis.com/upload/youtube/v3/thumbnails/set') + '?videoId=' + vj.id, { method: 'POST', headers: { ...auth, 'Content-Type': 'image/jpeg', 'Content-Length': String(img.length) }, body: img });
+      if (tr2.ok) console.log('Обложка на YouTube установлена.');
+      else { const e = await tr2.json().catch(() => ({})); console.log('Обложку на YouTube установить не удалось (видео загружено): ' + (e.error && e.error.message || tr2.status)); summary('- Обложка на YouTube не установлена: ' + (e.error && e.error.message || tr2.status) + '. Обычно нужно подтвердить канал по телефону: youtube.com/verify\n'); }
+    } catch (e) { console.log('Обложка на YouTube: ' + e.message); }
+  }
   const url = 'https://youtube.com/shorts/' + vj.id;
   console.log(`Загружено на YouTube (${vj.status && vj.status.privacyStatus || yt.privacy}): ${url}`);
   summary(`### Загружено на YouTube\n- ${url}\n`);
