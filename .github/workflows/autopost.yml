@@ -13,6 +13,10 @@ on:
         description: 'Проверка: сделать видео, но НЕ публиковать'
         type: boolean
         default: true
+      source:
+        description: 'cron = запуск от внешнего планировщика (правила расписания: слоты, дубли, автопубликация)'
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -26,6 +30,9 @@ concurrency:
 jobs:
   post:
     runs-on: ubuntu-24.04
+    env:
+      # Запуск от внешнего планировщика (cron-job.org) ведёт себя как запуск по расписанию
+      RUN_KIND: ${{ github.event_name == 'schedule' && 'schedule' || (inputs.source == 'cron' && 'schedule' || github.event_name) }}
     timeout-minutes: 45
     environment:
       name: github-pages

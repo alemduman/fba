@@ -10,7 +10,7 @@ async function main() {
   const id = (process.env.YT_CLIENT_ID || '').trim(), secret = (process.env.YT_CLIENT_SECRET || '').trim(), refresh = (process.env.YT_REFRESH_TOKEN || '').trim();
   if (!yt.enabled) { console.log('YouTube выключен в config.json.'); return; }
   // Не раньше fromHour по времени cfg.timezone (по умолчанию 12:00): тогда из семи запусков в день на YouTube уходят шесть
-  if (process.env.GITHUB_EVENT_NAME === 'schedule' && yt.fromHour != null) {
+  if ((process.env.RUN_KIND || process.env.GITHUB_EVENT_NAME) === 'schedule' && yt.fromHour != null) {
     const h = +new Intl.DateTimeFormat('en-GB', { hour: '2-digit', hour12: false, timeZone: cfg.timezone || 'Asia/Baku' }).format(new Date());
     if (h < +yt.fromHour) { console.log(`Сейчас ${h}:xx, YouTube начинается с ${yt.fromHour}:00 — этот ролик на YouTube не идёт.`); return; }
   }

@@ -57,7 +57,7 @@ function pickTeams(P, size, countries, rivals) {
 async function main() {
   const cfg = loadConfig();
   const state = loadState();
-  if (process.env.GITHUB_EVENT_NAME === 'schedule' && cfg.autoPublish !== true) {
+  if ((process.env.RUN_KIND || process.env.GITHUB_EVENT_NAME) === 'schedule' && cfg.autoPublish !== true) {
     console.log('Публикация по расписанию выключена: в config.json стоит "autoPublish": false. Этот запуск ничего не делает.');
     summary('### Расписание на паузе\nВ `config.json` стоит `"autoPublish": false`, поэтому ролик не делался и не публиковался.\nЧтобы включить, поменяй на `true`.');
     setOutput('skip', 'true');
@@ -67,7 +67,7 @@ async function main() {
   const TZ = cfg.timezone || 'Asia/Baku';
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(NOW);                         // ГГГГ-ММ-ДД
   const weekday = new Intl.DateTimeFormat('en-US', { timeZone: TZ, weekday: 'short' }).format(NOW).toLowerCase();   // mon…sun
-  if (process.env.GITHUB_EVENT_NAME === 'schedule' && cfg.startDate) {
+  if ((process.env.RUN_KIND || process.env.GITHUB_EVENT_NAME) === 'schedule' && cfg.startDate) {
     if (today < cfg.startDate) {
       console.log(`Публикации по расписанию начнутся с ${cfg.startDate} (сейчас ${today}). Этот запуск ничего не делает.`);
       summary(`### Ещё рано\nПубликации по расписанию начнутся с ${cfg.startDate} (в config.json поле \`startDate\`). Сейчас ${today}.`);
@@ -77,7 +77,7 @@ async function main() {
   }
   let SLOT = '';
   // Если ролик (в том числе запущенный вручную) вышел меньше 50 минут назад, запуск по расписанию его не дублирует
-  if (process.env.GITHUB_EVENT_NAME === 'schedule') {
+  if ((process.env.RUN_KIND || process.env.GITHUB_EVENT_NAME) === 'schedule') {
     const lastP = [...state.history].reverse().find(x => x.posted);
     if (lastP && NOW.getTime() - Date.parse(lastP.posted) < 50 * 60000 && NOW.getTime() >= Date.parse(lastP.posted)) {
       console.log(`Предыдущий ролик вышел ${lastP.posted}, это меньше 50 минут назад. Запуск по расписанию пропускаем, чтобы не было дубля.`);
@@ -88,7 +88,7 @@ async function main() {
   }
   // Защита от опоздавших запусков: GitHub иногда запускает расписание с задержкой в часы. Если запуск опоздал больше maxDelayMinutes
   // относительно ближайшего слота из schedule.hours, он ничего не делает (ролик не выходит не вовремя).
-  if (process.env.GITHUB_EVENT_NAME === 'schedule' && cfg.schedule && Array.isArray(cfg.schedule.hours) && cfg.schedule.hours.length) {
+  if ((process.env.RUN_KIND || process.env.GITHUB_EVENT_NAME) === 'schedule' && cfg.schedule && Array.isArray(cfg.schedule.hours) && cfg.schedule.hours.length) {
     const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(NOW).map(x => [x.type, x.value]));
     const m = (+parts.hour % 24) * 60 + +parts.minute, min = +cfg.schedule.minute || 0, maxD = +cfg.schedule.maxDelayMinutes || 120;
     // ближайший слот, в окне которого мы находимся (считаем и слот, который начался вчера вечером, если запуск пришёл сразу после полуночи)
