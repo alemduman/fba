@@ -14,18 +14,23 @@ function pickCurated(P, history, countries, [range]) {
   const recent = new Set(history.slice(-60).map(h => key(h.sel || [])));
   const bad = P.neverTogether || [];
   const clash = ids => bad.some(([a, b]) => ids.includes(a) && ids.includes(b));
+  // Пауза для стран: страна из последних cd роликов не повторяется (если хватает вариантов)
+  const cd = Math.max(0, +(P.cooldownVideos ?? 3));
+  const cool = new Set(history.slice(-cd).flatMap(h => h.sel || []));
+  const free = ids => !ids.some(i => cool.has(i));
   const sets = (P.sets || []).filter(ok);
   const [a, b] = (range || [3, 3]).map(Number), lo = Math.max(2, Math.min(8, a || 3)), hi = Math.max(lo, Math.min(8, b || lo));
   const europe = (P.europe || []).filter(i => known.has(i)), world = (P.world || []).filter(i => known.has(i));
   if (sets.length && Math.random() < (P.setChance ?? 0.45)) {
-    const fresh = sets.filter(s => !recent.has(key(s)));
+    const fresh = sets.filter(s => !recent.has(key(s)) && free(s));
     if (fresh.length) return shuffle(pick(fresh).slice());
   }
-  for (let k = 0; k < 200; k++) {
+  for (let k = 0; k < 400; k++) {
+    const strict = k < 300;   // сначала строго без недавних стран, потом без этого требования
     const n = lo + Math.floor(Math.random() * (hi - lo + 1)), ids = [];
     for (let t = 0; t < 50 && ids.length < n; t++) {
       const src = (Math.random() < (P.europeShare ?? 0.65) ? europe : world.length ? world : europe);
-      const id = pick(src); if (!ids.includes(id)) ids.push(id);
+      const id = pick(src); if (!ids.includes(id) && (!strict || !cool.has(id))) ids.push(id);
     }
     if (ids.length === n && !clash(ids) && !recent.has(key(ids))) return ids;
   }

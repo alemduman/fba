@@ -536,7 +536,8 @@
    "jm",
    "pk"
   ],
-  "neverTogether": []
+  "neverTogether": [],
+  "cooldownVideos": 3
  },
  "youtube": {
   "enabled": true,
