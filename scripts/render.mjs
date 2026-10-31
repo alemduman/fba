@@ -75,12 +75,27 @@ async function main() {
       return;
     }
   }
+  let SLOT = '';
   // Защита от опоздавших запусков: GitHub иногда запускает расписание с задержкой в часы. Если запуск опоздал больше maxDelayMinutes
   // относительно ближайшего слота из schedule.hours, он ничего не делает (ролик не выходит не вовремя).
   if (process.env.GITHUB_EVENT_NAME === 'schedule' && cfg.schedule && Array.isArray(cfg.schedule.hours) && cfg.schedule.hours.length) {
     const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(NOW).map(x => [x.type, x.value]));
     const m = (+parts.hour % 24) * 60 + +parts.minute, min = +cfg.schedule.minute || 0, maxD = +cfg.schedule.maxDelayMinutes || 120;
-    const ok = cfg.schedule.hours.some(h => [-1440, 0, 1440].some(sh => { const d = m + sh - (h * 60 + min); return d >= -20 && d <= maxD; }));
+    // ближайший слот, в окне которого мы находимся (считаем и слот, который начался вчера вечером, если запуск пришёл сразу после полуночи)
+    let hit = null;
+    for (const h of cfg.schedule.hours) for (const sh of [-1440, 0, 1440]) { const d = m + sh - (h * 60 + min); if (d >= -20 && d <= maxD && (!hit || Math.abs(d) < Math.abs(hit.d))) hit = { h, d, day: sh }; }
+    const ok = !!hit;
+    if (hit) {
+      const dayShift = hit.day === -1440 ? 1 : hit.day === 1440 ? -1 : 0;   // слот «вчера» при запуске после полуночи
+      const slotDate = new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(new Date(NOW.getTime() - dayShift * 86400000));
+      SLOT = `${slotDate}T${String(hit.h).padStart(2, '0')}`;
+      if (state.history.some(x => x.slot === SLOT)) {
+        console.log(`Слот ${SLOT} уже отработал (ролик опубликован). Повторный запуск ничего не делает.`);
+        summary(`### Слот ${SLOT} уже занят\nРолик на это время уже опубликован, повторный запуск пропущен.`);
+        setOutput('skip', 'true');
+        return;
+      }
+    }
     if (!ok) {
       console.log(`Запуск пришёл в ${parts.hour}:${parts.minute} по ${TZ}, это слишком далеко от слотов расписания (допустимое опоздание ${maxD} мин). Пропускаем.`);
       summary(`### Опоздавший запуск пропущен\nЗапуск пришёл в ${parts.hour}:${parts.minute} (${TZ}), а ближайший слот был больше ${maxD} минут назад. Ролик не делался и не публиковался.`);
@@ -267,7 +282,7 @@ async function main() {
   }
   writeJSON(path.join(OUT, 'post.json'), { video: 'v/' + name + '.mp4', cover, caption: text, title: caption.title, sel, mode, seconds: plan.seconds, seed: plan.seed, createdAt: new Date().toISOString() });
 
-  const next = { ...state, history: [...state.history, { date, sel, mode, seed: plan.seed, video: name + '.mp4' }].slice(-200) };
+  const next = { ...state, history: [...state.history, { date, sel, mode, seed: plan.seed, video: name + '.mp4', ...(SLOT ? { slot: SLOT } : {}) }].slice(-200) };
   if (tourMode) next.tournament = tourAfter;
   writeJSON(path.join(OUT, 'state.next.json'), next);
   summary(`### Ролик готов\n- Страны: ${sel.map(id => byId[id] ? byId[id].en : id).join(' vs ')}\n- Режим: ${mode}${tourMode ? ' (турнир «' + tour.name + '»)' : ''}, длина ≈ ${Math.round(plan.seconds)} с\n- Файл: \`${name}.mp4\`\n\n**Подпись:**\n\n${text.replace(/\n/g, '  \n')}\n`);
