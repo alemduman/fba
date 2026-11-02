@@ -193,6 +193,21 @@
       "mediaId": "18127095508982602",
       "permalink": "https://www.instagram.com/reel/DfNV89bEtba/",
       "posted": "2026-11-01T18:10:34.000Z"
+    },
+    {
+      "date": "2026-11-02",
+      "sel": [
+        "br",
+        "eg",
+        "tr"
+      ],
+      "mode": "lines",
+      "seed": 375703,
+      "video": "2026-11-02-brazil-egypt-turkey-375703.mp4",
+      "slot": "2026-11-02T10",
+      "mediaId": "18236450089319891",
+      "permalink": "https://www.instagram.com/reel/DfOoMlZEV-b/",
+      "posted": "2026-11-02T06:09:10.677Z"
     }
   ],
   "tournament": null,
