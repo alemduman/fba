@@ -157,7 +157,9 @@ async function main() {
   const active = !!(state.tournament && state.tournament.phase !== 'done');
   const dayOk = !T.weekday || String(T.weekday).toLowerCase().slice(0, 3) === weekday;
   const doneToday = !!(T.weekday && state.tournament && state.tournament.phase === 'done' && state.tournament.date === today);
-  const tourMode = !!T.enabled && (active || (dayOk && !doneToday));
+  // Ручной выбор стран (workflow_dispatch → countries, например "ch,de,at"): делаем именно этот бой, без турнира
+  const OVR = (process.env.COUNTRIES || '').split(/[\s,]+/).filter(Boolean);
+  const tourMode = !OVR.length && !!T.enabled && (active || (dayOk && !doneToday));
   if (tourMode) {
     tour = active ? state.tournament : null;
     if (!tour) {
@@ -187,6 +189,11 @@ async function main() {
     tour.cur = next;
     sel = next.r === 0 ? [tour.ids[2 * next.m], tour.ids[2 * next.m + 1]] : [tour.W[next.r - 1][2 * next.m], tour.W[next.r - 1][2 * next.m + 1]];
     log(`Матч турнира: раунд ${next.r + 1}, пара ${next.m + 1}: ${sel.join(' vs ')}`);
+  } else if (OVR.length) {
+    const bad = OVR.filter(i => !byId[i]);
+    if (bad.length) throw new Error(`Неизвестные страны: ${bad.join(', ')} (id из FLAGS.md)`);
+    sel = OVR;
+    log(`Страны выбраны вручную: ${sel.join(', ')}`);
   } else if (cfg.picks) {
     sel = pickCurated(cfg.picks, state.history, countries, [cfg.countriesPerVideo]);
     log(`Страны: ${sel.join(', ')}`);

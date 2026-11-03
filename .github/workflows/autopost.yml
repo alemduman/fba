@@ -13,6 +13,14 @@ on:
         description: 'Проверка: сделать видео, но НЕ публиковать'
         type: boolean
         default: true
+      countries:
+        description: 'Ручной бой: id стран через запятую (например ch,de,at). Пусто = как обычно'
+        type: string
+        default: ''
+      only_youtube:
+        description: 'Только YouTube (Instagram пропустить)'
+        type: boolean
+        default: false
       source:
         description: 'cron = запуск от внешнего планировщика (правила расписания: слоты, дубли, автопубликация)'
         type: string
@@ -31,6 +39,7 @@ jobs:
   post:
     runs-on: ubuntu-24.04
     env:
+      COUNTRIES: ${{ inputs.countries }}
       # Запуск от внешнего планировщика (cron-job.org) ведёт себя как запуск по расписанию
       RUN_KIND: ${{ github.event_name == 'schedule' && 'schedule' || (inputs.source == 'cron' && 'schedule' || github.event_name) }}
     timeout-minutes: 45
@@ -74,7 +83,7 @@ jobs:
 
       - name: Опубликовать в Instagram
         id: publish
-        if: steps.render.outputs.skip != 'true'
+        if: steps.render.outputs.skip != 'true' && inputs.only_youtube != true
         env:
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
