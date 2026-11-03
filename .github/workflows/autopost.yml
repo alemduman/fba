@@ -39,6 +39,9 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Свежий main, а не коммит на момент постановки запуска в очередь: иначе запуск, ждавший очереди, не видит слот, уже занятый предыдущим, и публикует дубль
+          ref: ${{ github.event.repository.default_branch }}
 
       - uses: actions/setup-node@v7
         with:
