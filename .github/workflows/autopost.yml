@@ -98,7 +98,14 @@ jobs:
         run: |
           git config user.name "flag-battle-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add state.json
-          git commit -q -m "Опубликован ролик $(date -u +%F)" || exit 0
-          git pull -q --rebase
-          git push -q
+          cp state.json "$RUNNER_TEMP/state.ours.json"
+          for i in 1 2 3 4 5; do
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            node scripts/merge-state.mjs "$RUNNER_TEMP/state.ours.json" state.json
+            git add state.json
+            git commit -q -m "Опубликован ролик $(date -u +%F)" || exit 0
+            git push -q origin HEAD:main && exit 0
+            sleep $((i * 5))
+          done
+          exit 1
