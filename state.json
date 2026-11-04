@@ -1,350 +1,365 @@
 {
-  "history": [
-    {
-      "date": "2026-10-31",
-      "sel": [
-        "de",
-        "fr",
-        "gb"
-      ],
-      "mode": "lines",
-      "seed": 192456,
-      "video": "2026-10-31-germany-france-uk-192456.mp4",
-      "mediaId": "18193524325408676",
-      "permalink": "https://www.instagram.com/reel/DfJsQD0k4UM/",
-      "posted": "2026-10-31T08:08:38.433Z"
-    },
-    {
-      "date": "2026-10-31",
-      "sel": [
-        "cz",
-        "de",
-        "pl"
-      ],
-      "mode": "lines",
-      "seed": 122498,
-      "video": "2026-10-31-czechia-germany-poland-122498.mp4",
-      "slot": "2026-10-31T14",
-      "mediaId": "18133157197825268",
-      "permalink": "https://www.instagram.com/reel/DfJ6TlFjHsK/",
-      "posted": "2026-10-31T10:11:15.346Z"
-    },
-    {
-      "date": "2026-10-31",
-      "sel": [
-        "ma",
-        "eg",
-        "dz"
-      ],
-      "mode": "lines",
-      "seed": 173007,
-      "video": "2026-10-31-morocco-egypt-algeria-173007.mp4",
-      "slot": "2026-10-31T16",
-      "mediaId": "17872749948644727",
-      "permalink": "https://www.instagram.com/reel/DfKH0bxCbKR/",
-      "posted": "2026-10-31T12:09:15.629Z"
-    },
-    {
-      "date": "2026-10-31",
-      "sel": [
-        "is",
-        "ch",
-        "kz"
-      ],
-      "mode": "lines",
-      "seed": 880450,
-      "video": "2026-10-31-iceland-switzerland-kazakhstan-880450.mp4",
-      "slot": "2026-10-31T18",
-      "mediaId": "18178139890431757",
-      "permalink": "https://www.instagram.com/reel/DfKVkoCDAdx/",
-      "posted": "2026-10-31T14:10:00.632Z"
-    },
-    {
-      "date": "2026-10-31",
-      "sel": [
-        "tr",
-        "bg",
-        "gr"
-      ],
-      "mode": "lines",
-      "seed": 883198,
-      "video": "2026-10-31-turkey-bulgaria-greece-883198.mp4",
-      "slot": "2026-10-31T20",
-      "mediaId": "18637692973028624",
-      "permalink": "https://www.instagram.com/reel/DfKjR-wktvG/",
-      "posted": "2026-10-31T16:09:15.739Z"
-    },
-    {
-      "date": "2026-10-31",
-      "sel": [
-        "mt",
-        "cy",
-        "cu"
-      ],
-      "mode": "lines",
-      "seed": 138498,
-      "video": "2026-10-31-malta-cyprus-cuba-138498.mp4",
-      "slot": "2026-10-31T22",
-      "mediaId": "18111001373187182",
-      "permalink": "https://www.instagram.com/reel/DfKxDG-j36h/",
-      "posted": "2026-10-31T18:09:33.836Z"
-    },
-    {
-      "date": "2026-11-01",
-      "sel": [
-        "hr",
-        "be",
-        "et"
-      ],
-      "mode": "lines",
-      "seed": 217260,
-      "video": "2026-11-01-croatia-belgium-ethiopia-217260.mp4",
-      "slot": "2026-11-01T10",
-      "mediaId": "18128959357870340",
-      "permalink": "https://www.instagram.com/reel/DfMDYwZDzQX/",
-      "posted": "2026-11-01T06:09:01.130Z"
-    },
-    {
-      "date": "2026-11-01",
-      "sel": [
-        "sn",
-        "ng",
-        "gh"
-      ],
-      "mode": "lines",
-      "seed": 567260,
-      "video": "2026-11-01-senegal-nigeria-ghana-567260.mp4",
-      "slot": "2026-11-01T12",
-      "mediaId": "18236394586324115",
-      "permalink": "https://www.instagram.com/reel/DfMRLCRGpRJ/",
-      "posted": "2026-11-01T08:09:34.647Z"
-    },
-    {
-      "date": "2026-11-01",
-      "sel": [
-        "it",
-        "fr",
-        "de"
-      ],
-      "mode": "lines",
-      "seed": 292602,
-      "video": "2026-11-01-italy-france-germany-292602.mp4",
-      "slot": "2026-11-01T14",
-      "mediaId": "17969980551192821",
-      "permalink": "https://www.instagram.com/reel/DfMfDl5jsb-/",
-      "posted": "2026-11-01T10:10:50.136Z"
-    },
-    {
-      "date": "2026-11-01",
-      "sel": [
-        "pe",
-        "mt",
-        "tr"
-      ],
-      "mode": "lines",
-      "seed": 250006,
-      "video": "2026-11-01-peru-malta-turkey-250006.mp4",
-      "slot": "2026-11-01T16",
-      "mediaId": "17997899793020841",
-      "permalink": "https://www.instagram.com/reel/DfMsyT-iY8o/",
-      "posted": "2026-11-01T12:10:45.525Z"
-    },
-    {
-      "date": "2026-11-01",
-      "sel": [
-        "lt",
-        "ca",
-        "ir"
-      ],
-      "mode": "lines",
-      "seed": 211977,
-      "video": "2026-11-01-lithuania-canada-iran-211977.mp4",
-      "slot": "2026-11-01T18",
-      "mediaId": "17986318764089123",
-      "permalink": "https://www.instagram.com/reel/DfM6VXrjS15/",
-      "posted": "2026-11-01T14:09:07.065Z"
-    },
-    {
-      "date": "2026-11-01",
-      "sel": [
-        "ee",
-        "fi",
-        "se"
-      ],
-      "mode": "lines",
-      "seed": 142403,
-      "video": "2026-11-01-estonia-finland-sweden-142403.mp4",
-      "slot": "2026-11-01T20",
-      "mediaId": "18136119070674130",
-      "permalink": "https://www.instagram.com/reel/DfNIXkqiGjN/",
-      "posted": "2026-11-01T16:11:54.646Z"
-    },
-    {
-      "date": "2026-11-01",
-      "sel": [
-        "it",
-        "at",
-        "cl"
-      ],
-      "mode": "lines",
-      "seed": 285560,
-      "video": "2026-11-01-italy-austria-chile-285560.mp4",
-      "slot": "2026-11-01T22",
-      "mediaId": "18127095508982602",
-      "permalink": "https://www.instagram.com/reel/DfNV89bEtba/",
-      "posted": "2026-11-01T18:10:34.000Z"
-    },
-    {
-      "date": "2026-11-02",
-      "sel": [
-        "br",
-        "eg",
-        "tr"
-      ],
-      "mode": "lines",
-      "seed": 375703,
-      "video": "2026-11-02-brazil-egypt-turkey-375703.mp4",
-      "slot": "2026-11-02T10",
-      "mediaId": "18236450089319891",
-      "permalink": "https://www.instagram.com/reel/DfOoMlZEV-b/",
-      "posted": "2026-11-02T06:09:10.677Z"
-    },
-    {
-      "date": "2026-11-02",
-      "sel": [
-        "es",
-        "fr",
-        "pt"
-      ],
-      "mode": "lines",
-      "seed": 495916,
-      "video": "2026-11-02-spain-france-portugal-495916.mp4",
-      "slot": "2026-11-02T12",
-      "mediaId": "17897915472611014",
-      "permalink": "https://www.instagram.com/reel/DfO2JExin16/",
-      "posted": "2026-11-02T08:10:58.768Z"
-    },
-    {
-      "date": "2026-11-02",
-      "sel": [
-        "se",
-        "no",
-        "dk"
-      ],
-      "mode": "lines",
-      "seed": 403976,
-      "video": "2026-11-02-sweden-norway-denmark-403976.mp4",
-      "slot": "2026-11-02T14",
-      "mediaId": "18108096098253435",
-      "permalink": "https://www.instagram.com/reel/DfPDscZjz49/",
-      "posted": "2026-11-02T10:09:28.072Z"
-    },
-    {
-      "date": "2026-11-02",
-      "sel": [
-        "pk",
-        "hu",
-        "si"
-      ],
-      "mode": "lines",
-      "seed": 614197,
-      "video": "2026-11-02-pakistan-hungary-slovenia-614197.mp4",
-      "slot": "2026-11-02T16",
-      "mediaId": "18141507889627612",
-      "permalink": "https://www.instagram.com/reel/DfPRbDEDHIU/",
-      "posted": "2026-11-02T12:09:22.892Z"
-    },
-    {
-      "date": "2026-11-02",
-      "sel": [
-        "ba",
-        "pl",
-        "ie"
-      ],
-      "mode": "lines",
-      "seed": 879183,
-      "video": "2026-11-02-bosnia-poland-ireland-879183.mp4",
-      "slot": "2026-11-02T18",
-      "mediaId": "18110183264258315",
-      "permalink": "https://www.instagram.com/reel/DfPfJiHEv6L/",
-      "posted": "2026-11-02T14:09:19.115Z"
-    },
-    {
-      "date": "2026-11-02",
-      "sel": [
-        "in",
-        "cn",
-        "ru"
-      ],
-      "mode": "lines",
-      "seed": 589081,
-      "video": "2026-11-02-india-china-russia-589081.mp4",
-      "slot": "2026-11-02T20",
-      "mediaId": "18107796983247555",
-      "permalink": "https://www.instagram.com/reel/DfPs4GkjtPO/",
-      "posted": "2026-11-02T16:09:15.647Z"
-    },
-    {
-      "date": "2026-11-03",
-      "sel": [
-        "at",
-        "mt",
-        "gb"
-      ],
-      "mode": "lines",
-      "seed": 788833,
-      "video": "2026-11-03-austria-malta-uk-788833.mp4",
-      "slot": "2026-11-03T12",
-      "mediaId": "17910398565576404",
-      "permalink": "https://www.instagram.com/reel/DfRayF5iBdT/",
-      "posted": "2026-11-03T08:09:39.937Z"
-    },
-    {
-      "date": "2026-11-03",
-      "sel": [
-        "si",
-        "br",
-        "eg"
-      ],
-      "mode": "lines",
-      "seed": 742214,
-      "video": "2026-11-03-slovenia-brazil-egypt-742214.mp4",
-      "slot": "2026-11-03T16",
-      "mediaId": "17911742958579546",
-      "permalink": "https://www.instagram.com/reel/DfR2OQFlIJE/",
-      "posted": "2026-11-03T12:09:26.796Z"
-    },
-    {
-      "date": "2026-11-03",
-      "sel": [
-        "cy",
-        "hr",
-        "ke"
-      ],
-      "mode": "lines",
-      "seed": 71967,
-      "video": "2026-11-03-cyprus-croatia-kenya-71967.mp4",
-      "slot": "2026-11-03T18",
-      "mediaId": "18635013853026108",
-      "permalink": "https://www.instagram.com/reel/DfSD77WDlL7/",
-      "posted": "2026-11-03T14:09:12.896Z"
-    },
-    {
-      "date": "2026-11-03",
-      "sel": [
-        "cn",
-        "ua",
-        "az"
-      ],
-      "mode": "lines",
-      "seed": 122498,
-      "video": "2026-11-03-china-ukraine-azerbaijan-122498.mp4",
-      "slot": "2026-11-03T20",
-      "mediaId": "18148120363576154",
-      "permalink": "https://www.instagram.com/reel/DfSRwozj6jw/",
-      "posted": "2026-11-03T16:10:17.206Z"
-    }
-  ],
-  "tournament": null,
-  "lastRefresh": null
+ "history": [
+  {
+   "date": "2026-10-31",
+   "sel": [
+    "de",
+    "fr",
+    "gb"
+   ],
+   "mode": "lines",
+   "seed": 192456,
+   "video": "2026-10-31-germany-france-uk-192456.mp4",
+   "mediaId": "18193524325408676",
+   "permalink": "https://www.instagram.com/reel/DfJsQD0k4UM/",
+   "posted": "2026-10-31T08:08:38.433Z"
+  },
+  {
+   "date": "2026-10-31",
+   "sel": [
+    "cz",
+    "de",
+    "pl"
+   ],
+   "mode": "lines",
+   "seed": 122498,
+   "video": "2026-10-31-czechia-germany-poland-122498.mp4",
+   "slot": "2026-10-31T14",
+   "mediaId": "18133157197825268",
+   "permalink": "https://www.instagram.com/reel/DfJ6TlFjHsK/",
+   "posted": "2026-10-31T10:11:15.346Z"
+  },
+  {
+   "date": "2026-10-31",
+   "sel": [
+    "ma",
+    "eg",
+    "dz"
+   ],
+   "mode": "lines",
+   "seed": 173007,
+   "video": "2026-10-31-morocco-egypt-algeria-173007.mp4",
+   "slot": "2026-10-31T16",
+   "mediaId": "17872749948644727",
+   "permalink": "https://www.instagram.com/reel/DfKH0bxCbKR/",
+   "posted": "2026-10-31T12:09:15.629Z"
+  },
+  {
+   "date": "2026-10-31",
+   "sel": [
+    "is",
+    "ch",
+    "kz"
+   ],
+   "mode": "lines",
+   "seed": 880450,
+   "video": "2026-10-31-iceland-switzerland-kazakhstan-880450.mp4",
+   "slot": "2026-10-31T18",
+   "mediaId": "18178139890431757",
+   "permalink": "https://www.instagram.com/reel/DfKVkoCDAdx/",
+   "posted": "2026-10-31T14:10:00.632Z"
+  },
+  {
+   "date": "2026-10-31",
+   "sel": [
+    "tr",
+    "bg",
+    "gr"
+   ],
+   "mode": "lines",
+   "seed": 883198,
+   "video": "2026-10-31-turkey-bulgaria-greece-883198.mp4",
+   "slot": "2026-10-31T20",
+   "mediaId": "18637692973028624",
+   "permalink": "https://www.instagram.com/reel/DfKjR-wktvG/",
+   "posted": "2026-10-31T16:09:15.739Z"
+  },
+  {
+   "date": "2026-10-31",
+   "sel": [
+    "mt",
+    "cy",
+    "cu"
+   ],
+   "mode": "lines",
+   "seed": 138498,
+   "video": "2026-10-31-malta-cyprus-cuba-138498.mp4",
+   "slot": "2026-10-31T22",
+   "mediaId": "18111001373187182",
+   "permalink": "https://www.instagram.com/reel/DfKxDG-j36h/",
+   "posted": "2026-10-31T18:09:33.836Z"
+  },
+  {
+   "date": "2026-11-01",
+   "sel": [
+    "hr",
+    "be",
+    "et"
+   ],
+   "mode": "lines",
+   "seed": 217260,
+   "video": "2026-11-01-croatia-belgium-ethiopia-217260.mp4",
+   "slot": "2026-11-01T10",
+   "mediaId": "18128959357870340",
+   "permalink": "https://www.instagram.com/reel/DfMDYwZDzQX/",
+   "posted": "2026-11-01T06:09:01.130Z"
+  },
+  {
+   "date": "2026-11-01",
+   "sel": [
+    "sn",
+    "ng",
+    "gh"
+   ],
+   "mode": "lines",
+   "seed": 567260,
+   "video": "2026-11-01-senegal-nigeria-ghana-567260.mp4",
+   "slot": "2026-11-01T12",
+   "mediaId": "18236394586324115",
+   "permalink": "https://www.instagram.com/reel/DfMRLCRGpRJ/",
+   "posted": "2026-11-01T08:09:34.647Z"
+  },
+  {
+   "date": "2026-11-01",
+   "sel": [
+    "it",
+    "fr",
+    "de"
+   ],
+   "mode": "lines",
+   "seed": 292602,
+   "video": "2026-11-01-italy-france-germany-292602.mp4",
+   "slot": "2026-11-01T14",
+   "mediaId": "17969980551192821",
+   "permalink": "https://www.instagram.com/reel/DfMfDl5jsb-/",
+   "posted": "2026-11-01T10:10:50.136Z"
+  },
+  {
+   "date": "2026-11-01",
+   "sel": [
+    "pe",
+    "mt",
+    "tr"
+   ],
+   "mode": "lines",
+   "seed": 250006,
+   "video": "2026-11-01-peru-malta-turkey-250006.mp4",
+   "slot": "2026-11-01T16",
+   "mediaId": "17997899793020841",
+   "permalink": "https://www.instagram.com/reel/DfMsyT-iY8o/",
+   "posted": "2026-11-01T12:10:45.525Z"
+  },
+  {
+   "date": "2026-11-01",
+   "sel": [
+    "lt",
+    "ca",
+    "ir"
+   ],
+   "mode": "lines",
+   "seed": 211977,
+   "video": "2026-11-01-lithuania-canada-iran-211977.mp4",
+   "slot": "2026-11-01T18",
+   "mediaId": "17986318764089123",
+   "permalink": "https://www.instagram.com/reel/DfM6VXrjS15/",
+   "posted": "2026-11-01T14:09:07.065Z"
+  },
+  {
+   "date": "2026-11-01",
+   "sel": [
+    "ee",
+    "fi",
+    "se"
+   ],
+   "mode": "lines",
+   "seed": 142403,
+   "video": "2026-11-01-estonia-finland-sweden-142403.mp4",
+   "slot": "2026-11-01T20",
+   "mediaId": "18136119070674130",
+   "permalink": "https://www.instagram.com/reel/DfNIXkqiGjN/",
+   "posted": "2026-11-01T16:11:54.646Z"
+  },
+  {
+   "date": "2026-11-01",
+   "sel": [
+    "it",
+    "at",
+    "cl"
+   ],
+   "mode": "lines",
+   "seed": 285560,
+   "video": "2026-11-01-italy-austria-chile-285560.mp4",
+   "slot": "2026-11-01T22",
+   "mediaId": "18127095508982602",
+   "permalink": "https://www.instagram.com/reel/DfNV89bEtba/",
+   "posted": "2026-11-01T18:10:34.000Z"
+  },
+  {
+   "date": "2026-11-02",
+   "sel": [
+    "br",
+    "eg",
+    "tr"
+   ],
+   "mode": "lines",
+   "seed": 375703,
+   "video": "2026-11-02-brazil-egypt-turkey-375703.mp4",
+   "slot": "2026-11-02T10",
+   "mediaId": "18236450089319891",
+   "permalink": "https://www.instagram.com/reel/DfOoMlZEV-b/",
+   "posted": "2026-11-02T06:09:10.677Z"
+  },
+  {
+   "date": "2026-11-02",
+   "sel": [
+    "es",
+    "fr",
+    "pt"
+   ],
+   "mode": "lines",
+   "seed": 495916,
+   "video": "2026-11-02-spain-france-portugal-495916.mp4",
+   "slot": "2026-11-02T12",
+   "mediaId": "17897915472611014",
+   "permalink": "https://www.instagram.com/reel/DfO2JExin16/",
+   "posted": "2026-11-02T08:10:58.768Z"
+  },
+  {
+   "date": "2026-11-02",
+   "sel": [
+    "se",
+    "no",
+    "dk"
+   ],
+   "mode": "lines",
+   "seed": 403976,
+   "video": "2026-11-02-sweden-norway-denmark-403976.mp4",
+   "slot": "2026-11-02T14",
+   "mediaId": "18108096098253435",
+   "permalink": "https://www.instagram.com/reel/DfPDscZjz49/",
+   "posted": "2026-11-02T10:09:28.072Z"
+  },
+  {
+   "date": "2026-11-02",
+   "sel": [
+    "pk",
+    "hu",
+    "si"
+   ],
+   "mode": "lines",
+   "seed": 614197,
+   "video": "2026-11-02-pakistan-hungary-slovenia-614197.mp4",
+   "slot": "2026-11-02T16",
+   "mediaId": "18141507889627612",
+   "permalink": "https://www.instagram.com/reel/DfPRbDEDHIU/",
+   "posted": "2026-11-02T12:09:22.892Z"
+  },
+  {
+   "date": "2026-11-02",
+   "sel": [
+    "ba",
+    "pl",
+    "ie"
+   ],
+   "mode": "lines",
+   "seed": 879183,
+   "video": "2026-11-02-bosnia-poland-ireland-879183.mp4",
+   "slot": "2026-11-02T18",
+   "mediaId": "18110183264258315",
+   "permalink": "https://www.instagram.com/reel/DfPfJiHEv6L/",
+   "posted": "2026-11-02T14:09:19.115Z"
+  },
+  {
+   "date": "2026-11-02",
+   "sel": [
+    "in",
+    "cn",
+    "ru"
+   ],
+   "mode": "lines",
+   "seed": 589081,
+   "video": "2026-11-02-india-china-russia-589081.mp4",
+   "slot": "2026-11-02T20",
+   "mediaId": "18107796983247555",
+   "permalink": "https://www.instagram.com/reel/DfPs4GkjtPO/",
+   "posted": "2026-11-02T16:09:15.647Z"
+  },
+  {
+   "date": "2026-11-03",
+   "sel": [
+    "at",
+    "mt",
+    "gb"
+   ],
+   "mode": "lines",
+   "seed": 788833,
+   "video": "2026-11-03-austria-malta-uk-788833.mp4",
+   "slot": "2026-11-03T12",
+   "mediaId": "17910398565576404",
+   "permalink": "https://www.instagram.com/reel/DfRayF5iBdT/",
+   "posted": "2026-11-03T08:09:39.937Z"
+  },
+  {
+   "date": "2026-11-03",
+   "sel": [
+    "si",
+    "br",
+    "eg"
+   ],
+   "mode": "lines",
+   "seed": 742214,
+   "video": "2026-11-03-slovenia-brazil-egypt-742214.mp4",
+   "slot": "2026-11-03T16",
+   "mediaId": "17911742958579546",
+   "permalink": "https://www.instagram.com/reel/DfR2OQFlIJE/",
+   "posted": "2026-11-03T12:09:26.796Z"
+  },
+  {
+   "date": "2026-11-03",
+   "sel": [
+    "cy",
+    "hr",
+    "ke"
+   ],
+   "mode": "lines",
+   "seed": 71967,
+   "video": "2026-11-03-cyprus-croatia-kenya-71967.mp4",
+   "slot": "2026-11-03T18",
+   "mediaId": "18635013853026108",
+   "permalink": "https://www.instagram.com/reel/DfSD77WDlL7/",
+   "posted": "2026-11-03T14:09:12.896Z"
+  },
+  {
+   "date": "2026-11-03",
+   "sel": [
+    "cn",
+    "ua",
+    "az"
+   ],
+   "mode": "lines",
+   "seed": 122498,
+   "video": "2026-11-03-china-ukraine-azerbaijan-122498.mp4",
+   "slot": "2026-11-03T20",
+   "mediaId": "18148120363576154",
+   "permalink": "https://www.instagram.com/reel/DfSRwozj6jw/",
+   "posted": "2026-11-03T16:10:17.206Z"
+  },
+  {
+   "date": "2026-11-04",
+   "sel": [
+    "fr",
+    "gr",
+    "mk"
+   ],
+   "mode": "lines",
+   "seed": 787599,
+   "video": "2026-11-04-france-greece-n-macedonia-787599.mp4",
+   "slot": "2026-11-04T12",
+   "mediaId": "18106779554359935",
+   "permalink": "https://www.instagram.com/reel/DfT_jb2EwKa/",
+   "posted": "2026-11-04T08:09:25.147Z"
+  }
+ ],
+ "tournament": null,
+ "lastRefresh": null
 }
