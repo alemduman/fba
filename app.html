@@ -2606,6 +2606,27 @@ $('#adLogo').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return
 $('#adLogoClear').onclick=()=>{$('#adLogo').value='';try{localStorage.removeItem('flagbattle_logo')}catch(x){}setLogo(DEFAULT_LOGO)};
 syncKind();buildChips();applyColors();buildPub();applyScale();$('#adState').textContent=st.ad.on?'включена':'выключена';
 /* обложка Reels: крупные флаги участников и вопрос «WHO WINS?». Важное держим в центре: сетка профиля обрезает кадр до 3:4 */
+function drawTrophy(g,x,y,sz){
+  g.save();g.translate(x,y);const k=sz/110;g.scale(k,k);g.shadowColor='rgba(255,200,60,.75)';g.shadowBlur=46;
+  const gr=g.createLinearGradient(0,-55,0,55);gr.addColorStop(0,'#fff3b0');gr.addColorStop(.5,'#ffd23c');gr.addColorStop(1,'#c98a10');
+  g.fillStyle=gr;g.strokeStyle=gr;g.lineWidth=8;g.lineCap='round';
+  g.beginPath();g.moveTo(-32,-52);g.lineTo(32,-52);g.quadraticCurveTo(32,10,0,20);g.quadraticCurveTo(-32,10,-32,-52);g.closePath();g.fill();
+  g.beginPath();g.moveTo(-32,-42);g.bezierCurveTo(-62,-42,-62,-6,-26,2);g.stroke();
+  g.beginPath();g.moveTo(32,-42);g.bezierCurveTo(62,-42,62,-6,26,2);g.stroke();
+  g.fillRect(-6,18,12,18);
+  g.beginPath();g.moveTo(-26,54);g.lineTo(-16,36);g.lineTo(16,36);g.lineTo(26,54);g.closePath();g.fill();
+  g.restore()}
+function drawTourCover(g,name,label,yb){
+  const parts=label.split(' · '),stage=parts[0],num=parts[1]||'';
+  g.save();g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;
+  g.shadowBlur=24;g.shadowColor='rgba(255,200,60,.55)';g.strokeStyle='#ffd23c';g.lineWidth=10;
+  if(g.roundRect){g.beginPath();g.roundRect(26,26,W-52,H-52,56);g.stroke()}else g.strokeRect(26,26,W-52,H-52);
+  g.shadowBlur=0;g.textAlign='center';g.textBaseline='alphabetic';
+  const nl=num?name+'  ·  '+num:name;g.fillStyle='#cfd8ea';fit(g,nl,W-160,42,800);g.fillText(nl,CX,yb-150);
+  g.shadowColor='rgba(255,200,60,.7)';g.shadowBlur=40;g.fillStyle='#ffd23c';fit(g,stage,W-140,118,900);g.fillText(stage,CX,yb);
+  g.shadowBlur=0;
+  drawTrophy(g,CX,yb-150-150,170);
+  g.restore()}
 function drawCoverWho(g,ids){
   const L=LT[st.lang]||LT.en,n=ids.length,rows=n<=4?[ids]:[ids.slice(0,Math.ceil(n/2)),ids.slice(Math.ceil(n/2))];
   let per=Math.max(...rows.map(r=>r.length)),gap=per>=3?70:110,r=Math.min(n<=2?170:n===3?140:n===4?112:104,Math.floor((W-100-gap*(per-1))/(2*per)));
@@ -2616,7 +2637,7 @@ function drawCoverWho(g,ids){
   for(const q of pos)glow(g,q.x,q.y,r*2.5,rgb(BY[q.id].c),.5);
   g.textAlign='center';g.textBaseline='alphabetic';fit(g,L.q,W-110,210,900);
   g.shadowColor='rgba(255,200,60,.6)';g.shadowBlur=46;g.fillStyle='#ffd23c';g.fillText(L.q,CX,y0-r-170);g.shadowBlur=0;
-  const tc=tourCtxNow();if(tc){const lab=((tour.name||'').toUpperCase()+' · '+tLabel(TL(),tc.r,tc.m).toUpperCase());g.fillStyle='#cfd8ea';fit(g,lab,W-110,44,800);g.fillText(lab,CX,y0-r-170-170)}
+  const tc=tourCtxNow();if(tc)drawTourCover(g,(tour.name||'').toUpperCase(),tLabel(TL(),tc.r,tc.m).toUpperCase(),y0-r-170-200);
   for(const q of pos){const C=BY[q.id];flagDot(g,q.id,q.x,q.y,r);
     g.fillStyle='#fff';g.textAlign='center';fit(g,cname(C).toUpperCase(),2*r+gap-8,46,800);g.fillText(cname(C).toUpperCase(),q.x,q.y+r+66);
     if(!q.last){g.fillStyle='#ffd23c';g.font=`900 ${gap>=100?44:36}px ${FNT}`;g.fillText('VS',q.x+r+gap/2,q.y+12)}}
