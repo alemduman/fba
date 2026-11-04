@@ -284,7 +284,13 @@ async function main() {
     const body = paras.filter(x => !/^Cut every rival/i.test(x) && !/^Follow for/i.test(x) && !/^#\S+(\s+#\S+)*$/.test(x));
     if (!tourMode && body.length < paras.length) {
       const tags = [plan.winner, ...sel.filter(id => id !== plan.winner)].slice(0, 2).map(tagOf);
-      text = [...body, 'Which flag survives? Pick your winner in the comments 👇', 'Follow for a new battle every 2 hours ⚔️', [...tags, '#flagbattle', '#geography', '#countries'].join(' ')].join('\n\n');
+      const CTA = [
+        ['Which flag survives? Pick your winner in the comments 👇', 'Follow to see which country rules the next round 👑'],
+        ['Be honest: did you guess the winner before the end? Tell us below 👇', 'Follow for the next flag showdown ⚔️'],
+        ['Which country do you back? Say it in the comments 👇', 'Follow and tell us who should fight next 🌍'],
+        ['Geography test: could you name the winner? Comment it 👇', 'Follow to level up your flag knowledge 🧠'],
+      ][Math.abs(parseInt(plan.seed, 10) || 0) % 4];
+      text = [...body, CTA[0], CTA[1], [...tags, '#flagbattle', '#geography', '#countries'].join(' ')].join('\n\n');
     }
   }
   const extra = (cfg.extraHashtags || []).map(t => '#' + String(t).trim().replace(/^#+/, '').replace(/\s+/g, '')).filter(t => t.length > 1);
