@@ -403,8 +403,60 @@
    "mediaId": "18064959164529485",
    "permalink": "https://www.instagram.com/reel/DfU4rZimcsg/",
    "posted": "2026-11-04T16:29:00.844Z"
+  },
+  {
+   "date": "2026-11-05",
+   "sel": [
+    "ie",
+    "gb"
+   ],
+   "mode": "lines",
+   "seed": 618046,
+   "video": "2026-11-05-ireland-uk-618046.mp4",
+   "slot": "2026-11-05T12",
+   "mediaId": "17916670047538557",
+   "permalink": "https://www.instagram.com/reel/DfWkUCekTMu/",
+   "posted": "2026-11-05T08:09:09.807Z"
   }
  ],
- "tournament": null,
+ "tournament": {
+  "v": 1,
+  "outro": true,
+  "shuffle": false,
+  "src": "all",
+  "phase": "live",
+  "size": 8,
+  "ids": [
+   "ie",
+   "gb",
+   "ro",
+   "hu",
+   "pk",
+   "in",
+   "ir",
+   "sa"
+  ],
+  "name": "WORLD FLAG CUP",
+  "date": "2026-11-05",
+  "W": [
+   [
+    "ie",
+    null,
+    null,
+    null
+   ],
+   [
+    null,
+    null
+   ],
+   [
+    null
+   ]
+  ],
+  "cur": {
+   "r": 0,
+   "m": 0
+  }
+ },
  "lastRefresh": null
 }
