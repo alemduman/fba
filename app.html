@@ -1800,11 +1800,11 @@ function drawWinnerTour(g,sim,tc){
     if(nx){const[a,b]=tPlayers(nx.r,nx.m,Wh);g.fillStyle='#8f9bb3';const lab=T.next+' · '+tLabel(T,nx.r,nx.m);fit(g,lab,W-120,28,700);g.fillText(lab,CX,CY+268);
       drawPair(g,a,b,CY+345,36);g.textAlign='center';g.fillStyle='#ffd23c';fit(g,T.fol,W-120,30,800);g.fillText(T.fol,CX,CY+420)}}
   g.restore()}
-function bracketGeo(){const R=tR(),N=tour.size,Y0=R>=4?470:R===3?500:540,Y1=R>=4?1350:R===3?1320:1280,P=[],DX=(CX-130-90)/(R-1);
+function bracketGeo(){const R=tR(),N=tour.size,Y0=R>=4?470:R===3?500:540,Y1=R>=4?1350:R===3?1320:1280,P=[],XO=R>=4?90:R===3?125:130,DX=(CX-115-XO)/(R-1);
   for(let r=0;r<R;r++){const n=N>>r,row=[];
     for(let j=0;j<n;j++){const left=j<n/2;let y;
       if(r===0){const jj=left?j:j-n/2;y=Y0+(jj+.5)*(Y1-Y0)/(n/2)}else{const p=P[r-1];y=(p[2*j].y+p[2*j+1].y)/2}
-      const xl=90+r*DX;row.push({x:left?xl:W-xl,y,left})}
+      const xl=XO+r*DX;row.push({x:left?xl:W-xl,y,left})}
     P.push(row)}
   return{P,R,DX,ch:{x:CX,y:P[R-1][0].y-215},rad:[0,0,62,50,36][R],fs:[0,0,26,22,17][R]}}
 function drawBracket(g,Wx,o){
