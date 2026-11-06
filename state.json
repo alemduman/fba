@@ -473,6 +473,20 @@
    "mediaId": "17965207362234828",
    "permalink": "https://www.instagram.com/reel/DfZktyACQox/",
    "posted": "2026-11-06T12:10:21.429Z"
+  },
+  {
+   "date": "2026-11-06",
+   "sel": [
+    "in",
+    "ir"
+   ],
+   "mode": "lines",
+   "seed": 215940,
+   "video": "2026-11-06-india-iran-215940.mp4",
+   "slot": "2026-11-06T18",
+   "mediaId": "17972875779177657",
+   "permalink": "https://www.instagram.com/reel/DfZy7spglMf/",
+   "posted": "2026-11-06T14:15:00.834Z"
   }
  ],
  "tournament": {
@@ -503,7 +517,7 @@
    ],
    [
     "ro",
-    null
+    "in"
    ],
    [
     null
@@ -511,7 +525,7 @@
   ],
   "cur": {
    "r": 1,
-   "m": 0
+   "m": 1
   }
  },
  "lastRefresh": null
