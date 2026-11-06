@@ -445,6 +445,20 @@
    "mediaId": "17877293115586526",
    "permalink": "https://www.instagram.com/reel/DfXNlNfjYVS/",
    "posted": "2026-11-05T14:09:37.976Z"
+  },
+  {
+   "date": "2026-11-06",
+   "sel": [
+    "ir",
+    "sa"
+   ],
+   "mode": "lines",
+   "seed": 76856,
+   "video": "2026-11-06-iran-saudi-76856.mp4",
+   "slot": "2026-11-06T12",
+   "mediaId": "18075440378779543",
+   "permalink": "https://www.instagram.com/reel/DfZJHXZFNPD/",
+   "posted": "2026-11-06T08:09:31.006Z"
   }
  ],
  "tournament": {
@@ -471,7 +485,7 @@
     "ie",
     "ro",
     "in",
-    null
+    "ir"
    ],
    [
     null,
@@ -483,7 +497,7 @@
   ],
   "cur": {
    "r": 0,
-   "m": 2
+   "m": 3
   }
  },
  "lastRefresh": null
