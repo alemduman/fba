@@ -36,6 +36,7 @@ for (const m of med) {
   const h = byLink.get((m.permalink || '').replace(/\/$/, ''));
   if (h) { row.sel = h.sel; row.topic = h.topic; row.style = h.style; row.mode = h.mode; row.tour = h.tour; }
   const r = await get(`${m.id}/insights`, { metric: METRICS.join(',') });
+  if (!r.ok && rows.length === 0) console.log('INSIGHTS_ERR', JSON.stringify(r.j.error || r.j).slice(0, 400));
   if (r.ok) for (const d of r.j.data || []) row[d.name] = d.values?.[0]?.value ?? d.total_value?.value;
   else {
     // если какая-то метрика не поддерживается, берём по одной
