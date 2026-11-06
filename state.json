@@ -487,6 +487,20 @@
    "mediaId": "17972875779177657",
    "permalink": "https://www.instagram.com/reel/DfZy7spglMf/",
    "posted": "2026-11-06T14:15:00.834Z"
+  },
+  {
+   "date": "2026-11-06",
+   "sel": [
+    "ro",
+    "in"
+   ],
+   "mode": "lines",
+   "seed": 41651,
+   "video": "2026-11-06-romania-india-41651.mp4",
+   "slot": "2026-11-06T20",
+   "mediaId": "18119877566079574",
+   "permalink": "https://www.instagram.com/reel/DfZ-wA9AhTH/",
+   "posted": "2026-11-06T15:57:49.136Z"
   }
  ],
  "tournament": {
@@ -494,7 +508,7 @@
   "outro": true,
   "shuffle": false,
   "src": "all",
-  "phase": "live",
+  "phase": "done",
   "size": 8,
   "ids": [
    "ie",
@@ -520,12 +534,12 @@
     "in"
    ],
    [
-    null
+    "in"
    ]
   ],
   "cur": {
-   "r": 1,
-   "m": 1
+   "r": 2,
+   "m": 0
   }
  },
  "lastRefresh": null
