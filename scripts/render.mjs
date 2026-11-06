@@ -18,9 +18,10 @@ function pickCurated(P, history, countries, [range]) {
   const cd = Math.max(0, +(P.cooldownVideos ?? 3));
   const cool = new Set(history.slice(-cd).flatMap(h => h.sel || []));
   const free = ids => !ids.some(i => cool.has(i));
-  const sets = (P.sets || []).filter(ok);
+  const sets = (P.sets || []).filter(ok).filter(st => st.filter(i => (P.avoid || []).includes(i)).length < 2);
   const [a, b] = (range || [3, 3]).map(Number), lo = Math.max(2, Math.min(8, a || 3)), hi = Math.max(lo, Math.min(8, b || lo));
-  const europe = (P.europe || []).filter(i => known.has(i)), world = (P.world || []).filter(i => known.has(i));
+  const avoid = new Set(P.avoid || []), hot = (P.hot || []).filter(i => known.has(i) && !avoid.has(i));
+  const europe = (P.europe || []).filter(i => known.has(i) && !avoid.has(i)), world = (P.world || []).filter(i => known.has(i) && !avoid.has(i));
   if (sets.length && Math.random() < (P.setChance ?? 0.45)) {
     const fresh = sets.filter(s => !recent.has(key(s)) && free(s));
     if (fresh.length) return shuffle(pick(fresh).slice());
@@ -30,7 +31,7 @@ function pickCurated(P, history, countries, [range]) {
     const n = lo + Math.floor(Math.random() * (hi - lo + 1)), ids = [];
     for (let t = 0; t < 50 && ids.length < n; t++) {
       const src = (Math.random() < (P.europeShare ?? 0.65) ? europe : world.length ? world : europe);
-      const id = pick(src); if (!ids.includes(id) && (!strict || !cool.has(id))) ids.push(id);
+      const id = (hot.length && Math.random() < (P.hotShare ?? 0.5)) ? pick(hot) : pick(src); if (!ids.includes(id) && (!strict || !cool.has(id))) ids.push(id);
     }
     if (ids.length === n && !clash(ids) && !recent.has(key(ids))) return ids;
   }
@@ -40,7 +41,8 @@ function pickCurated(P, history, countries, [range]) {
 // Участники турнира: сначала пары-соперники из picks.pairs (четвертьфиналы будут «принципиальными»), остальное добираем из популярных
 function pickTeams(P, size, countries, rivals) {
   const known = new Set(countries.map(c => c.id));
-  const europe = (P.europe || []).filter(i => known.has(i)), world = (P.world || []).filter(i => known.has(i));
+  const avoid = new Set(P.avoid || []), hot = (P.hot || []).filter(i => known.has(i) && !avoid.has(i));
+  const europe = (P.europe || []).filter(i => known.has(i) && !avoid.has(i)), world = (P.world || []).filter(i => known.has(i) && !avoid.has(i));
   const ids = [], used = new Set();
   if (rivals) for (const pr of shuffle((P.pairs || []).filter(pr => pr.length === 2 && pr.every(i => known.has(i))))) {
     if (ids.length >= size) break;
@@ -50,7 +52,7 @@ function pickTeams(P, size, countries, rivals) {
   for (let t = 0; t < 500 && ids.length < size; t += 2) {
     const two = [];
     for (let k = 0; k < 50 && two.length < 2; k++) {
-      const src = Math.random() < (P.europeShare ?? 0.65) ? europe : (world.length ? world : europe), id = pick(src);
+      const src = Math.random() < (P.europeShare ?? 0.65) ? europe : (world.length ? world : europe), id = (hot.length && Math.random() < (P.hotShare ?? 0.5)) ? pick(hot) : pick(src);
       if (!used.has(id) && !two.includes(id)) two.push(id);
     }
     if (two.length === 2) { ids.push(...two); two.forEach(i => used.add(i)); }
