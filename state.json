@@ -459,6 +459,20 @@
    "mediaId": "18075440378779543",
    "permalink": "https://www.instagram.com/reel/DfZJHXZFNPD/",
    "posted": "2026-11-06T08:09:31.006Z"
+  },
+  {
+   "date": "2026-11-06",
+   "sel": [
+    "ie",
+    "ro"
+   ],
+   "mode": "lines",
+   "seed": 721876,
+   "video": "2026-11-06-ireland-romania-721876.mp4",
+   "slot": "2026-11-06T16",
+   "mediaId": "17965207362234828",
+   "permalink": "https://www.instagram.com/reel/DfZktyACQox/",
+   "posted": "2026-11-06T12:10:21.429Z"
   }
  ],
  "tournament": {
@@ -488,7 +502,7 @@
     "ir"
    ],
    [
-    null,
+    "ro",
     null
    ],
    [
@@ -496,8 +510,8 @@
    ]
   ],
   "cur": {
-   "r": 0,
-   "m": 3
+   "r": 1,
+   "m": 0
   }
  },
  "lastRefresh": null
