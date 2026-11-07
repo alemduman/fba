@@ -312,7 +312,7 @@ async function main() {
   }
   writeJSON(path.join(OUT, 'post.json'), { video: 'v/' + name + '.mp4', cover, caption: text, title: caption.title, sel, mode, seconds: plan.seconds, seed: plan.seed, createdAt: new Date().toISOString() });
 
-  const next = { ...state, history: [...state.history, { date, sel, mode, seed: plan.seed, video: name + '.mp4', ...(SLOT ? { slot: SLOT } : {}) }].slice(-200) };
+  const next = { ...state, history: [...state.history, { date, sel, mode, seed: plan.seed, video: name + '.mp4', ...(plan.winner ? { winner: plan.winner } : {}), ...(SLOT ? { slot: SLOT } : {}) }].slice(-200) };
   if (tourMode) next.tournament = tourAfter;
   writeJSON(path.join(OUT, 'state.next.json'), next);
   summary(`### Ролик готов\n- Страны: ${sel.map(id => byId[id] ? byId[id].en : id).join(' vs ')}\n- Режим: ${mode}${tourMode ? ' (турнир «' + tour.name + '»)' : ''}, длина ≈ ${Math.round(plan.seconds)} с\n- Файл: \`${name}.mp4\`\n\n**Подпись:**\n\n${text.replace(/\n/g, '  \n')}\n`);
