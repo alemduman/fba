@@ -2691,6 +2691,23 @@ window.FlagBattle={
     await ensureFlags(tour&&tour.ids?[...st.sel,...tour.ids]:st.sel);
     return{mode:st.mode,lang:st.lang,sel:st.sel.slice(),tour:!!tourCtxNow()};
   },
+  async story(o){const ids=(o&&o.ids)||['it','de','fr','pl','nl'];await ensureFlags(ids);const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
+    g.fillStyle='#000';g.fillRect(0,0,W,H);const cl=x=>Math.max(0,Math.min(1,x));
+    glow(g,CX,330,520,'255,200,60',.22);
+    g.textAlign='center';g.textBaseline='alphabetic';g.shadowColor='rgba(255,200,60,.6)';g.shadowBlur=30;trophy(g,CX,300,150,'#ffd23c');g.shadowBlur=0;
+    g.fillStyle='#ffd23c';g.font=`800 44px ${FNT}`;g.fillText('NEW',CX,440);
+    g.fillStyle='#fff';fit(g,'FLAG LEADERBOARD',W-120,100,900);g.fillText('FLAG LEADERBOARD',CX,545);
+    g.fillStyle='#cfd8ea';fit(g,'Every battle now ends with the ranking',W-140,42,700);g.fillText('Every battle now ends with the ranking',CX,615);
+    const y0=700,st2=150,h=120;
+    ids.forEach((id,i)=>{const C=BY[id],y=y0+i*st2;
+      g.fillStyle='rgba(255,255,255,.07)';g.beginPath();g.roundRect(80,y,W-160,h,26);g.fill();
+      g.fillStyle=i===0?'#ffd23c':'#8f9bb3';g.textAlign='center';g.font=`800 52px ${FNT}`;g.fillText(String(i+1),145,y+h/2+18);
+      glow(g,245,y+h/2,60,rgb(C.c),.3);flagDot(g,id,245,y+h/2,44);
+      g.textAlign='left';g.fillStyle='#fff';fit(g,cname(C).toUpperCase(),420,40,800);g.fillText(cname(C).toUpperCase(),320,y+h/2+14);
+      g.textAlign='right';g.fillStyle='#ffd23c';g.font=`900 60px ${FNT}`;g.fillText('?',W-120,y+h/2+20)});
+    g.textAlign='center';g.fillStyle='#ffd23c';fit(g,'WHO WILL BE #1?',W-140,76,900);g.fillText('WHO WILL BE #1?',CX,y0+5*st2+110);
+    g.fillStyle='#cfd8ea';fit(g,'Watch the table change after every battle',W-140,38,700);g.fillText('Watch the table change after every battle',CX,y0+5*st2+175);
+    return new Promise(r=>c.toBlob(r,'image/jpeg',.93))},
   async setBoard(o){board=o&&o.rows&&o.rows.length?{rows:o.rows.filter(r=>BY[r.id])}:null;if(board)await ensureFlags(board.rows.map(r=>r.id))},
   async plan(){stop();await makePlan();stop();const p=st.plan;return p?{seed:p.seed,ts:p.ts,seconds:(p.frames+outroF())/FPS,winner:p.winner}:null},
   async record(){if(!st.plan)throw new Error('нет партии');pubAfter=false;lastBlob=null;await recordOffline();if(!lastBlob)throw new Error('видео не записалось');return lastBlob.blob},
