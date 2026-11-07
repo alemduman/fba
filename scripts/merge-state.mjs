@@ -6,7 +6,7 @@ let theirs = {};
 try { theirs = JSON.parse(fs.readFileSync(outP, 'utf8')); } catch {}
 const seen = new Set(), hist = [];
 for (const x of [...(theirs.history || []), ...(ours.history || [])]) {
-  const k = x.video || x.slot || JSON.stringify(x);
+  const k = x.mediaId || [x.video, x.slot, x.date, x.posted].filter(Boolean).join('|') || JSON.stringify(x);
   if (seen.has(k)) continue; seen.add(k); hist.push(x);
 }
 hist.sort((a, b) => String(a.posted || a.date).localeCompare(String(b.posted || b.date)));
