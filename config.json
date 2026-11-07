@@ -7,7 +7,7 @@
   "speed": 290,
   "lines": 40,
   "ramp": 5,
-  "length": "20-29",
+  "length": "18-26",
   "maxSeconds": 30,
   "recordBitrate": 20000000,
   "music": "auto",

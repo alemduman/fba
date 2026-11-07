@@ -1762,6 +1762,9 @@ function tLabel(T,r,m){const cnt=tCount(r);return T.r[tKey(r)]+(cnt>1?' · '+(m+
 function tourCtxNow(){if(!tour||tour.phase==='draft'||!tour.cur||!tour.W)return null;const{r,m}=tour.cur;if(r>=tR()||m>=tCount(r))return null;const[a,b]=tPlayers(r,m);
   if(!a||!b||st.sel.length!==2||st.sel[0]!==a||st.sel[1]!==b)return null;return{r,m,a,b}}
 const tourOutro=()=>tourCtxNow()&&tour.outro?OUTRO:0;
+let board=null;const BOARD_F=170;   // таблица лидеров в конце обычного боя: ~2,8 с
+const boardOn=()=>!tourCtxNow()&&board&&board.rows&&board.rows.length>=2;
+const outroF=()=>tourOutro()||(boardOn()?BOARD_F:0);
 
 /* --- рисование --- */
 function trophy(g,x,y,s,col){g.save();g.translate(x,y);g.scale(s/40,s/40);g.fillStyle=col;g.strokeStyle=col;g.lineWidth=4;
@@ -1846,9 +1849,31 @@ function drawBracket(g,Wx,o){
   else if(o.next){const[a,b]=tPlayers(o.next.r,o.next.m,Wx);const lab=T.next+' · '+tLabel(T,o.next.r,o.next.m);g.textAlign='center';g.fillStyle='#8f9bb3';fit(g,lab,W-120,28,700);g.fillText(lab,CX,1410);
     drawPair(g,a,b,1478,34);g.textAlign='center';g.fillStyle='#ffd23c';fit(g,T.fol,W-120,30,800);g.fillText(T.fol,CX,1545)}
   g.restore()}
+const BT={en:{title:'FLAG LEADERBOARD',sub:'MOST WINS IN OUR BATTLES',w:'WINS',foot:'FOLLOW TO WATCH THE RANKING CHANGE'},ru:{title:'РЕЙТИНГ ФЛАГОВ',sub:'БОЛЬШЕ ВСЕГО ПОБЕД В НАШИХ БОЯХ',w:'ПОБЕД',foot:'ПОДПИШИСЬ — РЕЙТИНГ МЕНЯЕТСЯ'}};
+function drawBoard(g,sim,k){
+  const T=BT[st.lang]||BT.en,rows=board.rows.slice(0,6),cur=sim.winner,cl=x=>Math.max(0,Math.min(1,x)),eo=x=>1-Math.pow(1-cl(x),3);
+  g.save();g.textAlign='center';g.textBaseline='alphabetic';g.globalAlpha=cl(k/10);
+  fit(g,T.title,W-220,56,900);const nw=g.measureText(T.title).width,x0=CX-(nw+66)/2;
+  g.shadowColor='rgba(255,200,60,.55)';g.shadowBlur=22;trophy(g,x0+26,262,52,'#ffd23c');g.textAlign='left';g.fillStyle='#ffd23c';g.fillText(T.title,x0+66,280);g.shadowBlur=0;
+  g.textAlign='center';g.fillStyle='#cfd8ea';fit(g,T.sub,W-160,30,700);g.fillText(T.sub,CX,340);
+  const y0=520,st2=190,h=150;
+  rows.forEach((r,i)=>{
+    const C=BY[r.id];if(!C)return;const e=eo((k-6-i*8)/18);if(e<=0)return;
+    const y=y0+i*st2,isCur=r.id===cur,pop=isCur?cl((k-78)/14):0,val=isCur&&k<78?r.w-1:r.w;
+    g.save();g.globalAlpha=e;g.translate((1-e)*140,0);
+    g.fillStyle=isCur?'rgba(255,210,60,.14)':'rgba(255,255,255,.07)';g.beginPath();g.roundRect(60,y,W-120,h,28);g.fill();
+    if(isCur){g.strokeStyle=`rgba(255,210,60,${.55+.35*Math.sin(k*.18)})`;g.lineWidth=4;g.stroke()}
+    g.fillStyle=i===0?'#ffd23c':'#8f9bb3';g.textAlign='center';g.font=`800 60px ${FNT}`;g.fillText(String(r.rank||i+1),128,y+h/2+21);
+    glow(g,230,y+h/2,70,rgb(C.c),.35);flagDot(g,r.id,230,y+h/2,52);
+    g.textAlign='left';g.fillStyle='#fff';fit(g,cname(C).toUpperCase(),W-120-330-210,46,800);g.fillText(cname(C).toUpperCase(),310,y+h/2+16);
+    g.textAlign='right';g.fillStyle=isCur&&pop>0?'#ffd23c':'#fff';g.save();g.translate(W-100,y+h/2+16);g.scale(1+.25*Math.sin(pop*Math.PI),1+.25*Math.sin(pop*Math.PI));g.font=`900 66px ${FNT}`;g.fillText(String(val),0,0);g.restore();
+    g.fillStyle='#8f9bb3';g.font=`700 24px ${FNT}`;g.fillText(T.w,W-100,y+h/2+48);
+    g.restore()});
+  g.globalAlpha=cl((k-50)/16);g.textAlign='center';g.fillStyle='#ffd23c';fit(g,T.foot,W-120,32,800);g.fillText(T.foot,CX,y0+rows.length*st2+55);
+  g.restore()}
 function renderOutro(g,sim,k,scale){
   g.setTransform(scale,0,0,scale,0,0);g.globalAlpha=1;g.shadowBlur=0;g.fillStyle='#000';g.fillRect(0,0,W,H);
-  const tc=tourCtxNow();if(!tc)return;const Wh=tHyp(tc.r,tc.m,sim.winner);
+  const tc=tourCtxNow();if(!tc){if(boardOn()){drawBoard(g,sim,k);drawWm(g)}return}const Wh=tHyp(tc.r,tc.m,sim.winner);
   g.save();g.globalAlpha=Math.min(1,k/12);drawBracket(g,Wh,{hl:tc,adv:{r:tc.r,m:tc.m,w:sim.winner},next:tNext(Wh),k});g.restore();drawWm(g)}
 
 /* --- панель турнира --- */
@@ -2141,7 +2166,7 @@ function startPlayCore(rc){
   applyScale();sim=newSim(cfg(st.plan.ts),st.plan.seed,true);
   const title=autoTitle();render(ctx,sim,st.scale,title);
   if(rc&&!beginRecording()){setBusy(false);return}
-  let last=performance.now(),acc=0,ok=0;const OF=tourOutro();
+  let last=performance.now(),acc=0,ok=0;const OF=outroF();
   const tick=now=>{
     acc+=now-last;last=now;if(acc>100)acc=100;let moved=false;
     while(acc>=1000/FPS&&(!sim.done||ok<OF)){if(!sim.done)sim.step();else ok++;acc-=1000/FPS;moved=true}
@@ -2481,7 +2506,7 @@ async function renderScore(S,sr,total,onPart){
   return{mus,fx};
 }
 async function buildAudio(sr,onPart){
-  const OF=tourOutro(),{ev,frames,end}=simEvents(),dur=(frames+OF)/FPS+.2,total=Math.ceil(dur*sr);
+  const OF=outroF(),{ev,frames,end}=simEvents(),dur=(frames+OF)/FPS+.2,total=Math.ceil(dur*sr);
   const S=mkScore(sr),tone=S.tone,noise=S.noise,mus=S.MUS,fx=S.FX;
   const nd=new Float32Array(Math.floor(sr*.5));let q=12345;for(let i=0;i<nd.length;i++){q=(Math.imul(q,1103515245)+12345)>>>0;nd[i]=q/2147483648-1}S.buf('n0',nd);
   const mg=st.snd==='all'?.55:0;
@@ -2509,7 +2534,7 @@ async function buildAudio(sr,onPart){
   return oc.startRendering();
 }
 let actx=null,asrc=null,abuf=null,akey='';
-const audioKey=()=>[st.mode,st.plan.seed,st.plan.ts,st.snd,st.music,tourOutro(),st.sel.join(),st.lines,st.speed,st.ramp].join('|');
+const audioKey=()=>[st.mode,st.plan.seed,st.plan.ts,st.snd,st.music,outroF(),st.sel.join(),st.lines,st.speed,st.ramp].join('|');
 function stopSound(){if(asrc){try{asrc.stop()}catch(e){}asrc=null}}
 /* Запись кадр за кадром: каждый кадр получает точный таймкод, лаги телефона в ролик не попадают */
 async function recordOffline(){
@@ -2532,7 +2557,7 @@ async function recordOffline(){
     let encErr=null;const enc=new VideoEncoder({output:(c,m)=>muxer.addVideoChunk(c,m),error:e=>{encErr=e}});enc.configure(pick.c);
     let deq=null;try{enc.addEventListener('dequeue',()=>{if(deq){const r=deq;deq=null;r()}})}catch(e){}
     const waitQ=()=>new Promise(r=>{deq=r;setTimeout(()=>{if(deq===r){deq=null;r()}},8)});
-    const OF=tourOutro(),s=newSim(cfg(st.plan.ts),st.plan.seed,true),title=autoTitle(),total=st.plan.frames+OF;let i=0,ok=0;
+    const OF=outroF(),s=newSim(cfg(st.plan.ts),st.plan.seed,true),title=autoTitle(),total=st.plan.frames+OF;let i=0,ok=0;
     setStatus('Собираю видео кадр за кадром. Не закрывай страницу.');
     while((!s.done||ok<OF)&&!encErr){
       if(rt!==recToken){try{enc.close()}catch(e){}return}
@@ -2666,7 +2691,8 @@ window.FlagBattle={
     await ensureFlags(tour&&tour.ids?[...st.sel,...tour.ids]:st.sel);
     return{mode:st.mode,lang:st.lang,sel:st.sel.slice(),tour:!!tourCtxNow()};
   },
-  async plan(){stop();await makePlan();stop();const p=st.plan;return p?{seed:p.seed,ts:p.ts,seconds:(p.frames+tourOutro())/FPS,winner:p.winner}:null},
+  async setBoard(o){board=o&&o.rows&&o.rows.length?{rows:o.rows.filter(r=>BY[r.id])}:null;if(board)await ensureFlags(board.rows.map(r=>r.id))},
+  async plan(){stop();await makePlan();stop();const p=st.plan;return p?{seed:p.seed,ts:p.ts,seconds:(p.frames+outroF())/FPS,winner:p.winner}:null},
   async record(){if(!st.plan)throw new Error('нет партии');pubAfter=false;lastBlob=null;await recordOffline();if(!lastBlob)throw new Error('видео не записалось');return lastBlob.blob},
   caption:()=>({title:$('#pubTitle').value,text:$('#pubText').value}),
   async cover(o){if(!st.plan)return null;await ensureFlags(st.sel);const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');

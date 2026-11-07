@@ -214,6 +214,18 @@ async function main() {
   }
 
   const MAXS = +cfg.maxSeconds > 0 ? +cfg.maxSeconds : 30;
+  // таблица лидеров в конце обычного боя: победы из истории (+ победитель этого боя)
+  const boardRows = (extraWinner) => {
+    const w = {}, n = {};
+    for (const h of state.history) { for (const id of h.sel || []) n[id] = (n[id] || 0) + 1; if (h.winner) w[h.winner] = (w[h.winner] || 0) + 1; }
+    if (extraWinner) { w[extraWinner] = (w[extraWinner] || 0) + 1; }
+    const all = Object.keys(w).map(id => ({ id, w: w[id], n: (n[id] || 0) + (extraWinner && (sel || []).includes(id) ? 1 : 0) }))
+      .sort((x, y) => y.w - x.w || (y.w / Math.max(1, y.n)) - (x.w / Math.max(1, x.n)) || (y.n - x.n)).map((r, i) => ({ ...r, rank: i + 1 }));
+    const top = all.slice(0, 5), me = extraWinner && all.find(r => r.id === extraWinner);
+    return me && !top.includes(me) ? [...top, me] : top;   // победитель этого боя виден, даже если он вне топ-5
+  };
+  const useBoard = !tourMode && cfg.board !== false && boardRows().length >= 2;
+  await page.evaluate(r => window.FlagBattle.setBoard(r ? { rows: r } : null), useBoard ? boardRows() : null);
   const len = tourMode ? (T.length || '18-25') : cfg.length;   // в турнирном ролике ещё 3 секунды сетки в конце
   let plan = null;
   for (let attempt = 1; attempt <= 12 && !plan; attempt++) {
@@ -229,6 +241,7 @@ async function main() {
   }
   if (!plan) throw new Error(`Не удалось подобрать партию не длиннее ${MAXS} с: уменьши "length" или увеличь "speed" в config.json.`);
   log(`Партия №${plan.seed}, около ${Math.round(plan.seconds)} с`);
+  if (useBoard) { const br = boardRows(plan.winner); await page.evaluate(r => window.FlagBattle.setBoard({ rows: r }), br); log('Таблица лидеров:', br.map(r => r.id + ':' + r.w).join(' ')); }
 
   // обложку делаем до записи: после записи турнир переходит к следующему матчу и подпись на обложке сбилась бы
   const coverB64 = cfg.cover === false ? null : await page.evaluate(async style => {
