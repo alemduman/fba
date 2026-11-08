@@ -8,6 +8,7 @@
   "lines": 40,
   "ramp": 5,
   "length": "18-26",
+  "board": false,
   "maxSeconds": 30,
   "recordBitrate": 20000000,
   "music": "auto",
