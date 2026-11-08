@@ -1,7 +1,8 @@
 name: Ответы на комментарии
 
 on:
-  # schedule отключён, пока не добавлен секрет ANTHROPIC_API_KEY (без него ответы шаблонные)
+  schedule:
+    - cron: '17,47 * * * *'
   workflow_dispatch:
     inputs:
       dry_run:
