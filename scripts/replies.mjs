@@ -58,7 +58,7 @@ for (const m of media) {
     if (text.length < 2 || SPAM.test(text) || BAD.test(text) || (text.match(/#/g) || []).length >= 3) { console.log(`пропуск: ${text.slice(0, 40)}`); continue; }
     if (sent >= MAX) break;
     let reply = emojiOnly(text) ? pick(['🔥', '🙌', '😎', '👀']) : await llm(text, m.caption);
-    if (reply === null) reply = pick(T[isRu(text) ? 'ru' : 'en']);
+    if (reply === null) { console.log(`нет ответа от LLM, пропускаю до следующего запуска: «${text.slice(0, 40)}»`); continue; }   // шаблонов нет: лучше промолчать, чем ответить как бот
     if (/^SKIP\b/i.test(reply)) { console.log(`LLM: пропуск «${text.slice(0, 40)}»`); continue; }
     reply = reply.slice(0, 200);
     console.log(`${c.username}: «${text.slice(0, 60)}» → «${reply}»`);
