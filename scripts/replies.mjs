@@ -30,7 +30,7 @@ async function llm(comment, caption) {
   if (!process.env.ANTHROPIC_API_KEY) return null;
   const prompt = `Ты ведёшь Instagram-аккаунт: ${DESC}.\nПод видео (подпись: «${(caption || '').slice(0, 300)}») написали комментарий:\n«${comment.slice(0, 400)}»\n\nНапиши короткий дружелюбный ответ от имени аккаунта: не длиннее 120 символов, на языке комментария, не больше одного эмодзи, без ссылок, хэштегов и упоминаний, без выдуманных фактов. Если уместно, добавь короткий вопрос, чтобы продолжить разговор. Если комментарий — спам, оскорбление, политика, реклама, просьба что-то купить/подписаться, или отвечать на него нельзя/неуместно, напиши ровно: SKIP\nВерни только текст ответа.`;
   try {
-    const r = await fetch(process.env.ANTHROPIC_API_URL || 'https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' }, body: JSON.stringify({ model: process.env.REPLY_MODEL || 'claude-sonnet-5-5', max_tokens: 150, messages: [{ role: 'user', content: prompt }] }) });
+    const r = await fetch(process.env.ANTHROPIC_API_URL || 'https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' }, body: JSON.stringify({ model: process.env.REPLY_MODEL || 'claude-sonnet-5-5', max_tokens: 1200, messages: [{ role: 'user', content: prompt }] }) });
     const j = await r.json();
     if (!r.ok) throw new Error((j.error && j.error.message) || r.status);
     const t = (j.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim().replace(/^["«]|["»]$/g, '');
