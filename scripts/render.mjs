@@ -224,7 +224,7 @@ async function main() {
     const top = all.slice(0, 5), me = extraWinner && all.find(r => r.id === extraWinner);
     return me && !top.includes(me) ? [...top, me] : top;   // победитель этого боя виден, даже если он вне топ-5
   };
-  const useBoard = !tourMode && cfg.board !== false && boardRows().length >= 2;
+  const useBoard = !tourMode && cfg.board !== false && boardRows().length >= 1;
   await page.evaluate(r => window.FlagBattle.setBoard(r ? { rows: r } : null), useBoard ? boardRows() : null);
   const len = tourMode ? (T.length || '18-25') : cfg.length;   // в турнирном ролике ещё 3 секунды сетки в конце
   let plan = null;
