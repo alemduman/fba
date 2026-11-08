@@ -28,7 +28,7 @@ const pick = a => a[Math.floor(Math.random() * a.length)];
 
 async function llm(comment, caption) {
   if (!process.env.ANTHROPIC_API_KEY) return null;
-  const prompt = `Ты ведёшь Instagram-аккаунт: ${DESC}.\nПод видео (подпись: «${(caption || '').slice(0, 300)}») написали комментарий:\n«${comment.slice(0, 400)}»\n\nНапиши короткий дружелюбный ответ от имени аккаунта: не длиннее 120 символов, на языке комментария, не больше одного эмодзи, без ссылок, хэштегов и упоминаний, без выдуманных фактов. Если уместно, добавь короткий вопрос, чтобы продолжить разговор. Если комментарий — спам, оскорбление, политика, реклама, просьба что-то купить/подписаться, или отвечать на него нельзя/неуместно, напиши ровно: SKIP\nВерни только текст ответа.`;
+  const prompt = `Ты живой человек, который ведёт Instagram-аккаунт (${DESC}) и болтает с подписчиками в комментариях. Под видео (подпись: «${(caption || '').slice(0, 300)}») написали:\n«${comment.slice(0, 400)}»\n\nОтветь так, как ответил бы обычный дружелюбный парень в комментах: по-простому, тепло, с лёгким сленгом и юмором, на языке комментария (подстраивайся под стиль автора: если он пишет коротко и с маленькой буквы, отвечай так же). Правила: до 90 символов, максимум один эмодзи (а можно и без), не начинай с «Спасибо» и не пиши шаблонно, не повторяй одну и ту же конструкцию, не всегда задавай вопрос (вопрос только если он реально уместен), никаких ссылок, хэштегов и @. Не выдумывай факты о видео, держись того, что в подписи и комментарии. Не говори, что ты бот или ИИ. Если комментарий — спам, оскорбление, политика, реклама, просьба купить/подписаться или отвечать неуместно, напиши ровно: SKIP\nВерни только текст ответа.`;
   try {
     const r = await fetch(process.env.ANTHROPIC_API_URL || 'https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' }, body: JSON.stringify({ model: process.env.REPLY_MODEL || 'claude-sonnet-5-5', max_tokens: 1200, messages: [{ role: 'user', content: prompt }] }) });
     const j = await r.json();
@@ -38,6 +38,7 @@ async function llm(comment, caption) {
   } catch (e) { console.log('LLM недоступна, беру шаблон: ' + e.message); return null; }
 }
 
+if (process.env.SAMPLE_COMMENTS) { for (const t of process.env.SAMPLE_COMMENTS.split('|')) console.log(`«${t}» → «${await llm(t, process.env.SAMPLE_CAPTION || '')}»`); process.exit(0); }
 const me = await ig('GET', UID, { fields: 'username' });
 console.log(`Аккаунт @${me.username}${DRY ? ' (DRY RUN)' : ''}`);
 const media = (await ig('GET', `${UID}/media`, { fields: 'id,caption,timestamp,comments_count', limit: String(POSTS) })).data || [];

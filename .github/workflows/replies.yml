@@ -9,6 +9,10 @@ on:
         description: 'Проверка: показать ответы, но не отправлять'
         type: boolean
         default: true
+      sample:
+        description: 'Тест стиля: комментарии через | (ничего не отправляется)'
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -33,5 +37,6 @@ jobs:
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ACCOUNT_DESC: 'Битва флагов: короткие видео, где флаги стран сражаются друг с другом, побеждает последний выживший'
+          SAMPLE_COMMENTS: ${{ github.event_name == 'workflow_dispatch' && inputs.sample || '' }}
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
         run: node scripts/replies.mjs
