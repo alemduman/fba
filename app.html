@@ -2691,6 +2691,31 @@ window.FlagBattle={
     await ensureFlags(tour&&tour.ids?[...st.sel,...tour.ids]:st.sel);
     return{mode:st.mode,lang:st.lang,sel:st.sel.slice(),tour:!!tourCtxNow()};
   },
+  async carousel(o){const A=(o&&o.a)||'sk',B=(o&&o.b)||'cz';await ensureFlags([A,B]);const CA=BY[A],CB=BY[B],na=cname(CA).toUpperCase(),nb=cname(CB).toUpperCase(),out=[];
+    const mk=()=>{const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');g.fillStyle='#000';g.fillRect(0,0,W,H);g.textBaseline='alphabetic';g.textAlign='center';return [c,g]};
+    const fin=c=>new Promise(r=>c.toBlob(r,'image/jpeg',.93));
+    // 1. хук
+    let [c,g]=mk();glow(g,CX,500,600,'255,200,60',.18);
+    g.fillStyle='#ffd23c';fit(g,'WHO WINS?',W-120,150,900);g.fillText('WHO WINS?',CX,330);
+    glow(g,CX,720,300,rgb(CA.c),.3);flagDot(g,A,CX,720,230);
+    g.fillStyle='#fff';g.font=`900 90px ${FNT}`;g.fillText('VS',CX,1050);
+    glow(g,CX,1390,300,rgb(CB.c),.3);flagDot(g,B,CX,1390,230);
+    g.fillStyle='#cfd8ea';fit(g,'Swipe to vote ➜',W-140,46,700);g.fillText('Swipe to vote ➜',CX,1760);out.push(await fin(c));
+    // 2. голосование
+    [c,g]=mk();g.fillStyle='#ffd23c';fit(g,'COMMENT TO VOTE',W-120,100,900);g.fillText('COMMENT TO VOTE',CX,300);
+    [[A,CA,na,'1',560],[B,CB,nb,'2',1060]].forEach(([id,C,n,k,y])=>{
+      g.fillStyle='rgba(255,255,255,.07)';g.beginPath();g.roundRect(70,y,W-140,400,40);g.fill();
+      glow(g,260,y+200,220,rgb(C.c),.3);flagDot(g,id,260,y+200,140);
+      g.fillStyle='#ffd23c';g.font=`900 150px ${FNT}`;g.textAlign='center';g.fillText(k,W-210,y+245);
+      g.textAlign='left';g.fillStyle='#fff';fit(g,n,420,56,800);g.fillText(n,430,y+170);
+      g.fillStyle='#8f9bb3';g.font=`700 34px ${FNT}`;g.fillText('type '+k,430,y+235);g.textAlign='center'});
+    g.fillStyle='#cfd8ea';fit(g,'Drop 1 or 2 in the comments 👇',W-140,46,700);g.fillText('Drop 1 or 2 in the comments 👇',CX,1620);out.push(await fin(c));
+    // 3. продолжение
+    [c,g]=mk();glow(g,CX,700,560,'255,200,60',.2);g.shadowColor='rgba(255,200,60,.6)';g.shadowBlur=30;trophy(g,CX,640,210,'#ffd23c');g.shadowBlur=0;
+    g.fillStyle='#fff';fit(g,'THE BATTLE IS COMING',W-120,96,900);g.fillText('THE BATTLE IS COMING',CX,1010);
+    g.fillStyle='#ffd23c';fit(g,na+' vs '+nb,W-140,70,900);g.fillText(na+' vs '+nb,CX,1130);
+    g.fillStyle='#cfd8ea';fit(g,'Follow to see who wins',W-140,46,700);g.fillText('Follow to see who wins',CX,1260);out.push(await fin(c));
+    return out},
   async story(o){const ids=(o&&o.ids)||['it','de','fr','pl','nl'];await ensureFlags(ids);const c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d');
     g.fillStyle='#000';g.fillRect(0,0,W,H);const cl=x=>Math.max(0,Math.min(1,x));
     glow(g,CX,330,520,'255,200,60',.22);
