@@ -55,9 +55,9 @@ for (const m of media) {
     if (c.username === me.username) continue;
     if (Date.now() - Date.parse(c.timestamp) > MAX_AGE) continue;
     if ((c.replies && c.replies.data || []).some(r => r.username === me.username)) continue;
-    if (text.length < 1) { console.log('пропуск: пустой текст'); continue; }
+    // комментарий без текста (гифка, стикер) или только эмодзи: отвечаем эмодзи
     if (sent >= MAX) break;
-    let reply = emojiOnly(text) ? pick(['🔥', '🙌', '😎', '👀']) : await llm(text, m.caption);
+    let reply = (text.length < 1 || emojiOnly(text)) ? pick(['🔥', '🙌', '😎', '👀', '😂', '💪', '🤝']) : await llm(text, m.caption);
     if (reply === null) { console.log(`нет ответа от LLM, пропускаю до следующего запуска: «${text.slice(0, 40)}»`); continue; }   // шаблонов нет: лучше промолчать, чем ответить как бот
     if (/^SKIP\b/i.test(reply)) { console.log(`LLM: пропуск «${text.slice(0, 40)}»`); continue; }
     reply = reply.slice(0, 200);
