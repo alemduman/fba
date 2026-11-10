@@ -234,7 +234,7 @@ async function main() {
     const conf = await page.evaluate(o => window.FlagBattle.configure(o), {
       mode, lang: cfg.language, speed: cfg.speed, lines: cfg.lines, ramp: cfg.ramp, len, music: cfg.music, snd: cfg.sound,
       wm: cfg.watermark || '', ad: AD === 'off' ? { on: false } : { on: true, kind: AD }, sel, tour, scale: 1,
-      seedBase: Math.floor(Math.random() * 1e6), want: 'any', bitrate: cfg.recordBitrate || 20e6,
+      seedBase: Math.floor(Math.random() * 1e6), want: (SLOT && cfg.scheduledWinner && sel.includes(cfg.scheduledWinner[SLOT])) ? cfg.scheduledWinner[SLOT] : 'any', bitrate: cfg.recordBitrate || 20e6,
     });
     if (attempt === 1) log('Настройки:', JSON.stringify(conf));
     const p = await page.evaluate(() => window.FlagBattle.plan());
