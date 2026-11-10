@@ -308,14 +308,19 @@ async function main() {
         ['Geography test: could you name the winner? Comment it 👇', 'Follow to level up your flag knowledge 🧠'],
       ][Math.abs(parseInt(plan.seed, 10) || 0) % 4];
       const kind = sel.every(i => /^fc_/.test(i)) ? 'fc' : sel.every(i => /^cb_/.test(i)) ? 'cb' : '';
+      const nm = id => { const e = byId[id] ? byId[id].en : id; return /^[A-Z0-9 .&'-]+$/.test(e) && e.length <= 4 ? e : e.toLowerCase().replace(/(^|[ -])([a-z])/g, (m, a, b) => a + b.toUpperCase()); };
+      const names = sel.map(nm), joined = names.join(' vs ');
+      const KW = kind === 'fc' ? `${joined}: football rivalry quiz. Which club is bigger? Soccer clubs battle, football fans challenge, who is the best team, club crests game.`
+        : kind === 'cb' ? `${joined}: car brands battle. Which car brand is the best? Car logo quiz, guess the car brand, car lovers challenge, auto brands showdown.`
+        : `${joined}: flag battle quiz. Guess the flag, country flags game, geography quiz, flags of the world, which country wins?`;
       if (kind) {
         const ic = kind === 'fc' ? '⚽' : '🚗';
         const C2 = kind === 'fc'
           ? ['Which club wins this rivalry? Pick your side in the comments 👇', 'Follow for the next football showdown ⚔️']
           : ['Which car brand wins? Pick your side in the comments 👇', 'Follow for the next car brand showdown ⚔️'];
-        text = [...body.map(b => b.replace(/🚩/g, ic).replace(/\b(Bmw|Gmc|Ktm|Byd|Psg|Psv)\b/g, m => m.toUpperCase())), C2[0], C2[1], [...tags, ...(kind === 'fc' ? ['#football', '#soccer', '#footballfans'] : ['#cars', '#carbrands', '#carsofinstagram'])].join(' ')].join('\n\n');
+        text = [...body.map(b => b.replace(/🚩/g, ic).replace(/\b(Bmw|Gmc|Ktm|Byd|Psg|Psv)\b/g, m => m.toUpperCase())), KW, C2[0], C2[1], [...tags, ...(kind === 'fc' ? ['#football', '#soccer', '#footballfans'] : ['#cars', '#carbrands', '#carsofinstagram'])].join(' ')].join('\n\n');
       } else
-      text = [...body, CTA[0], CTA[1], [...tags, '#flagbattle', '#geography', '#countries'].join(' ')].join('\n\n');
+      text = [...body, KW, CTA[0], CTA[1], [...tags, '#flagbattle', '#geography', '#countries'].join(' ')].join('\n\n');
     }
   }
   const extra = (cfg.extraHashtags || []).map(t => '#' + String(t).trim().replace(/^#+/, '').replace(/\s+/g, '')).filter(t => t.length > 1);
