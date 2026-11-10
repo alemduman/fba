@@ -160,7 +160,9 @@ async function main() {
   const dayOk = !T.weekday || String(T.weekday).toLowerCase().slice(0, 3) === weekday;
   const doneToday = !!(T.weekday && state.tournament && state.tournament.phase === 'done' && state.tournament.date === today);
   // Ручной выбор стран (workflow_dispatch → countries, например "ch,de,at"): делаем именно этот бой, без турнира
-  const OVR = (process.env.COUNTRIES || '').split(/[\s,]+/).filter(Boolean);
+  let OVR = (process.env.COUNTRIES || '').split(/[\s,]+/).filter(Boolean);
+  // Разовая подмена на слот из расписания: config.scheduled = { "2026-11-11T12": ["fc_rma","fc_bar"] } (только для запусков по расписанию)
+  if (!OVR.length && SLOT && cfg.scheduled && Array.isArray(cfg.scheduled[SLOT])) { OVR = cfg.scheduled[SLOT].slice(); console.log(`Слот ${SLOT}: заданы вручную ${OVR.join(', ')}`); }
   const tourMode = !OVR.length && !!T.enabled && (active || (dayOk && !doneToday));
   if (tourMode) {
     tour = active ? state.tournament : null;
@@ -305,6 +307,14 @@ async function main() {
         ['Which country do you back? Say it in the comments 👇', 'Follow and tell us who should fight next 🌍'],
         ['Geography test: could you name the winner? Comment it 👇', 'Follow to level up your flag knowledge 🧠'],
       ][Math.abs(parseInt(plan.seed, 10) || 0) % 4];
+      const kind = sel.every(i => /^fc_/.test(i)) ? 'fc' : sel.every(i => /^cb_/.test(i)) ? 'cb' : '';
+      if (kind) {
+        const ic = kind === 'fc' ? '⚽' : '🚗';
+        const C2 = kind === 'fc'
+          ? ['Which club wins this rivalry? Pick your side in the comments 👇', 'Follow for the next football showdown ⚔️']
+          : ['Which car brand wins? Pick your side in the comments 👇', 'Follow for the next car brand showdown ⚔️'];
+        text = [...body.map(b => b.replace(/🚩/g, ic).replace(/\b(Bmw|Gmc|Ktm|Byd|Psg|Psv)\b/g, m => m.toUpperCase())), C2[0], C2[1], [...tags, ...(kind === 'fc' ? ['#football', '#soccer', '#footballfans'] : ['#cars', '#carbrands', '#carsofinstagram'])].join(' ')].join('\n\n');
+      } else
       text = [...body, CTA[0], CTA[1], [...tags, '#flagbattle', '#geography', '#countries'].join(' ')].join('\n\n');
     }
   }

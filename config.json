@@ -650,7 +650,11 @@
     "category": "24",
     "fromHour": 12
   },
-  "schedule": {
+  "scheduled": {
+  "2026-11-11T12": ["fc_rma", "fc_bar", "fc_atm"],
+  "2026-11-11T16": ["cb_bmw", "cb_mb", "cb_aud"]
+ },
+ "schedule": {
     "hours": [
       12,
       16,
