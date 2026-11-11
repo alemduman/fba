@@ -651,11 +651,14 @@
     "fromHour": 12
   },
   "scheduled": {
-  "2026-11-11T12": ["fc_rma", "fc_bar", "fc_atm"],
-  "2026-11-11T16": ["cb_bmw", "cb_mb", "cb_aud"]
- },
- "scheduledWinner": { "2026-11-11T12": "fc_rma", "2026-11-11T16": "cb_bmw" },
- "schedule": {
+    "2026-11-12T12": [
+      "fc_mun",
+      "fc_mci",
+      "fc_ars"
+    ]
+  },
+  "scheduledWinner": {},
+  "schedule": {
     "hours": [
       12,
       16,
