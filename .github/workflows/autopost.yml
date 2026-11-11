@@ -61,9 +61,19 @@ jobs:
         timeout-minutes: 25
         run: |
           npm install --no-audit --no-fund
-          # Установка иногда зависает на стороне GitHub (apt/CDN): ограничиваем время и повторяем
-          ok=0; for i in 1 2 3; do (timeout 120 sudo apt-get update -qq || true) && timeout 420 npx playwright install --with-deps chromium && ok=1 && break; echo "попытка $i не удалась, повтор"; sleep 10; done; [ "$ok" = 1 ] || exit 1
-          command -v ffmpeg >/dev/null || (timeout 180 sudo apt-get update -qq && timeout 180 sudo apt-get install -y -qq ffmpeg)
+          # Браузер без apt: системные библиотеки для него на машинах GitHub уже есть. apt только если браузер не запустился
+          for i in 1 2 3; do timeout 300 npx playwright install chromium && break; echo "попытка $i не удалась, повтор"; sleep 10; done
+          if ! node -e "require('playwright').chromium.launch().then(b=>b.close()).catch(e=>{console.error(e.message);process.exit(1)})"; then
+            echo "Браузеру не хватает библиотек, ставлю через apt"
+            ok=0; for i in 1 2 3; do (timeout 120 sudo apt-get update -qq || true) && timeout 420 npx playwright install --with-deps chromium && ok=1 && break; echo "попытка $i не удалась, повтор"; sleep 10; done; [ "$ok" = 1 ] || exit 1
+          fi
+          # ffmpeg и ffprobe: готовая сборка с GitHub (apt у GitHub иногда не может достучаться до зеркала Ubuntu и зависает), apt только запасной путь
+          if ! command -v ffmpeg >/dev/null || ! command -v ffprobe >/dev/null; then
+            if timeout 240 curl -sSfL -o /tmp/ff.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz; then
+              tar -xJf /tmp/ff.tar.xz -C /tmp && sudo cp /tmp/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg /tmp/ffmpeg-master-latest-linux64-gpl/bin/ffprobe /usr/local/bin/
+            fi
+          fi
+          command -v ffprobe >/dev/null || (timeout 180 sudo apt-get update -qq; timeout 240 sudo apt-get install -y -qq ffmpeg)
           ffmpeg -version | head -n 1
 
       - name: Сделать ролик
