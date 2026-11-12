@@ -784,6 +784,22 @@
    "mediaId": "17955751281278637",
    "permalink": "https://www.instagram.com/reel/DfnNPoMAUAt/",
    "posted": "2026-11-11T19:14:43.375Z"
+  },
+  {
+   "date": "2026-11-12",
+   "sel": [
+    "fc_mun",
+    "fc_mci",
+    "fc_ars"
+   ],
+   "mode": "lines",
+   "seed": 101566,
+   "video": "2026-11-12-man-united-man-city-arsenal-101566.mp4",
+   "winner": "fc_mci",
+   "slot": "2026-11-12T12",
+   "mediaId": "18377408587211349",
+   "permalink": "https://www.instagram.com/reel/Dfol2H4gmA2/",
+   "posted": "2026-11-12T08:09:18.272Z"
   }
  ],
  "tournament": {
