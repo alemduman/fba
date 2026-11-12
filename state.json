@@ -800,6 +800,21 @@
    "mediaId": "18377408587211349",
    "permalink": "https://www.instagram.com/reel/Dfol2H4gmA2/",
    "posted": "2026-11-12T08:09:18.272Z"
+  },
+  {
+   "date": "2026-11-12",
+   "sel": [
+    "br",
+    "pt"
+   ],
+   "mode": "lines",
+   "seed": 793983,
+   "video": "2026-11-12-brazil-portugal-793983.mp4",
+   "winner": "pt",
+   "slot": "2026-11-12T16",
+   "mediaId": "17997373035062074",
+   "permalink": "https://www.instagram.com/reel/DfpBVY7idZW/",
+   "posted": "2026-11-12T12:09:06.360Z"
   }
  ],
  "tournament": {
@@ -807,37 +822,37 @@
   "outro": true,
   "shuffle": false,
   "src": "all",
-  "phase": "done",
+  "phase": "live",
   "size": 8,
   "ids": [
-   "ie",
-   "gb",
-   "ro",
-   "hu",
-   "pk",
-   "in",
+   "br",
+   "pt",
+   "uy",
+   "ar",
+   "mx",
+   "es",
    "ir",
    "sa"
   ],
   "name": "WORLD FLAG CUP",
-  "date": "2026-11-05",
+  "date": "2026-11-12",
   "W": [
    [
-    "ie",
-    "ro",
-    "in",
-    "ir"
+    "pt",
+    null,
+    null,
+    null
    ],
    [
-    "ro",
-    "in"
+    null,
+    null
    ],
    [
-    "in"
+    null
    ]
   ],
   "cur": {
-   "r": 2,
+   "r": 0,
    "m": 0
   }
  },
