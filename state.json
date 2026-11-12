@@ -830,6 +830,21 @@
    "mediaId": "17899856100678903",
    "permalink": "https://www.instagram.com/reel/DfpPDRVGIiS/",
    "posted": "2026-11-12T14:08:55.222Z"
+  },
+  {
+   "date": "2026-11-12",
+   "sel": [
+    "mx",
+    "es"
+   ],
+   "mode": "lines",
+   "seed": 374432,
+   "video": "2026-11-12-mexico-spain-374432.mp4",
+   "winner": "es",
+   "slot": "2026-11-12T20",
+   "mediaId": "18362349349216972",
+   "permalink": "https://www.instagram.com/reel/DfpcyazEoRs/",
+   "posted": "2026-11-12T16:09:00.699Z"
   }
  ],
  "tournament": {
@@ -855,7 +870,7 @@
    [
     "pt",
     "uy",
-    null,
+    "es",
     null
    ],
    [
@@ -868,7 +883,7 @@
   ],
   "cur": {
    "r": 0,
-   "m": 1
+   "m": 2
   }
  },
  "lastRefresh": null
