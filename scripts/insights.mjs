@@ -32,7 +32,7 @@ const METRICS = ['views', 'reach', 'likes', 'comments', 'shares', 'saved', 'tota
 const byLink = new Map((state.history || []).filter(h => h.permalink).map(h => [h.permalink.replace(/\/$/, ''), h]));
 const rows = [];
 for (const m of med) {
-  const row = { id: m.id, time: m.timestamp, link: m.permalink, type: m.media_product_type, likes_public: m.like_count, comments_public: m.comments_count, caption: (m.caption || '').split('\n')[0].slice(0, 90) };
+  const row = { id: m.id, time: m.timestamp, link: m.permalink, type: m.media_product_type, likes_public: m.like_count, comments_public: m.comments_count, caption: (m.caption || '').split('\n')[0].slice(0, 90), first_len: [...(m.caption || '').split('\n')[0]].length };
   const h = byLink.get((m.permalink || '').replace(/\/$/, ''));
   if (h) { row.sel = h.sel; row.topic = h.topic; row.style = h.style; row.mode = h.mode; row.tour = h.tour; }
   const r = await get(`${m.id}/insights`, { metric: METRICS.join(',') });
