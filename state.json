@@ -890,6 +890,21 @@
    "mediaId": "18033254597687079",
    "permalink": "https://www.instagram.com/reel/Dfrz9VfEeQ5/",
    "posted": "2026-11-13T14:10:01.193Z"
+  },
+  {
+   "date": "2026-11-13",
+   "sel": [
+    "pt",
+    "sa"
+   ],
+   "mode": "lines",
+   "seed": 221733,
+   "video": "2026-11-13-portugal-saudi-221733.mp4",
+   "winner": "sa",
+   "slot": "2026-11-13T20",
+   "mediaId": "18027305432922328",
+   "permalink": "https://www.instagram.com/reel/DfsBqa9CBx0/",
+   "posted": "2026-11-13T16:09:53.230Z"
   }
  ],
  "tournament": {
@@ -897,7 +912,7 @@
   "outro": true,
   "shuffle": false,
   "src": "all",
-  "phase": "live",
+  "phase": "done",
   "size": 8,
   "ids": [
    "br",
@@ -923,12 +938,12 @@
     "sa"
    ],
    [
-    null
+    "sa"
    ]
   ],
   "cur": {
-   "r": 1,
-   "m": 1
+   "r": 2,
+   "m": 0
   }
  },
  "lastRefresh": null
