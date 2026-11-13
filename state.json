@@ -860,6 +860,21 @@
    "mediaId": "18485293708143184",
    "permalink": "https://www.instagram.com/reel/DfrKqOHEhTa/",
    "posted": "2026-11-13T08:09:31.697Z"
+  },
+  {
+   "date": "2026-11-13",
+   "sel": [
+    "pt",
+    "uy"
+   ],
+   "mode": "lines",
+   "seed": 501448,
+   "video": "2026-11-13-portugal-uruguay-501448.mp4",
+   "winner": "pt",
+   "slot": "2026-11-13T16",
+   "mediaId": "18101197313451124",
+   "permalink": "https://www.instagram.com/reel/DfrmGnuDvSs/",
+   "posted": "2026-11-13T12:08:54.411Z"
   }
  ],
  "tournament": {
@@ -889,7 +904,7 @@
     "sa"
    ],
    [
-    null,
+    "pt",
     null
    ],
    [
@@ -897,8 +912,8 @@
    ]
   ],
   "cur": {
-   "r": 0,
-   "m": 3
+   "r": 1,
+   "m": 0
   }
  },
  "lastRefresh": null
