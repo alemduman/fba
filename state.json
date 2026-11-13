@@ -875,6 +875,21 @@
    "mediaId": "18101197313451124",
    "permalink": "https://www.instagram.com/reel/DfrmGnuDvSs/",
    "posted": "2026-11-13T12:08:54.411Z"
+  },
+  {
+   "date": "2026-11-13",
+   "sel": [
+    "es",
+    "sa"
+   ],
+   "mode": "lines",
+   "seed": 656661,
+   "video": "2026-11-13-spain-saudi-656661.mp4",
+   "winner": "sa",
+   "slot": "2026-11-13T18",
+   "mediaId": "18033254597687079",
+   "permalink": "https://www.instagram.com/reel/Dfrz9VfEeQ5/",
+   "posted": "2026-11-13T14:10:01.193Z"
   }
  ],
  "tournament": {
@@ -905,7 +920,7 @@
    ],
    [
     "pt",
-    null
+    "sa"
    ],
    [
     null
@@ -913,7 +928,7 @@
   ],
   "cur": {
    "r": 1,
-   "m": 0
+   "m": 1
   }
  },
  "lastRefresh": null
