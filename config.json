@@ -657,7 +657,9 @@
       "kg"
     ]
   },
-  "scheduledWinner": {},
+  "scheduledWinner": {
+    "2026-11-14T18": "tj"
+  },
   "schedule": {
     "hours": [
       12,
