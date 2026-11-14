@@ -651,10 +651,10 @@
     "fromHour": 12
   },
   "scheduled": {
-    "2026-11-12T12": [
-      "fc_mun",
-      "fc_mci",
-      "fc_ars"
+    "2026-11-14T18": [
+      "tj",
+      "uz",
+      "kg"
     ]
   },
   "scheduledWinner": {},
