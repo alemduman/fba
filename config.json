@@ -651,15 +651,13 @@
     "fromHour": 12
   },
   "scheduled": {
-    "2026-11-14T18": [
-      "tj",
-      "uz",
-      "kg"
+    "2026-11-16T20": [
+      "pp_putin",
+      "pp_kim",
+      "pp_trump"
     ]
   },
-  "scheduledWinner": {
-    "2026-11-14T18": "tj"
-  },
+  "scheduledWinner": {},
   "schedule": {
     "hours": [
       12,

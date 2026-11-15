@@ -504,6 +504,9 @@
 | `sp_pmr` | Приднестровье | TRANSNISTRIA |
 | `sp_rome` | Римская империя | ROMAN EMPIRE |
 | `sp_ruemp` | Российская империя | RUSSIAN EMPIRE |
+| `pp_putin` | Путин (фото) | PUTIN |
+| `pp_kim` | Ким Чен Ын (фото) | KIM JONG UN |
+| `pp_trump` | Трамп (фото) | TRUMP |
 | `sp_ussr` | СССР | USSR |
 | `sp_ncy` | Северный Кипр | N. CYPRUS |
 | `sp_sealand` | Силенд | SEALAND |

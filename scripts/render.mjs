@@ -219,14 +219,14 @@ async function main() {
   // таблица лидеров в конце обычного боя: победы из истории (+ победитель этого боя)
   const boardRows = (extraWinner) => {
     const w = {}, n = {};
-    for (const h of state.history) { for (const id of h.sel || []) n[id] = (n[id] || 0) + 1; if (h.winner) w[h.winner] = (w[h.winner] || 0) + 1; }
+    for (const h of state.history) { for (const id of h.sel || []) n[id] = (n[id] || 0) + 1; if (h.winner && !/^pp_/.test(h.winner)) w[h.winner] = (w[h.winner] || 0) + 1; }   // портреты (pp_) в рейтинг флагов не попадают
     if (extraWinner) { w[extraWinner] = (w[extraWinner] || 0) + 1; }
     const all = Object.keys(w).map(id => ({ id, w: w[id], n: (n[id] || 0) + (extraWinner && (sel || []).includes(id) ? 1 : 0) }))
       .sort((x, y) => y.w - x.w || (y.w / Math.max(1, y.n)) - (x.w / Math.max(1, x.n)) || (y.n - x.n)).map((r, i) => ({ ...r, rank: i + 1 }));
     const top = all.slice(0, 5), me = extraWinner && all.find(r => r.id === extraWinner);
     return me && !top.includes(me) ? [...top, me] : top;   // победитель этого боя виден, даже если он вне топ-5
   };
-  const useBoard = !tourMode && cfg.board !== false && !sel.every(i => /^(fc|cb)_/.test(i)) && boardRows().length >= 1;   // таблица флагов не нужна в роликах про клубы и авто
+  const useBoard = !tourMode && cfg.board !== false && !sel.every(i => /^(fc|cb)_/.test(i)) && !sel.some(i => /^pp_/.test(i)) && boardRows().length >= 1;   // таблица флагов не нужна в роликах про клубы, авто и людей
   await page.evaluate(r => window.FlagBattle.setBoard(r ? { rows: r } : null), useBoard ? boardRows() : null);
   const len = tourMode ? (T.length || '18-25') : cfg.length;   // в турнирном ролике ещё 3 секунды сетки в конце
   let plan = null;
@@ -294,7 +294,10 @@ async function main() {
   // Instagram разрешает не больше 5 хэштегов: свои из extraHashtags идут первыми, остальные места занимают хэштеги приложения
   const tagOf = id => '#' + (byId[id] ? byId[id].en : id).toLowerCase().replace(/[^a-z0-9]+/g, '');
   const winTag = plan.winner ? tagOf(plan.winner) : null;
-  let text = caption.text;
+  // ролики с людьми (pp_): без флажков-эмодзи, «Kim Jong Un» без «UN», в названии не «Flag Battle»
+  const isPP = sel.some(i => /^pp_/.test(i));
+  const fixPP = s => isPP ? String(s || '').replace(/Kim Jong UN/g, 'Kim Jong Un').replace(/ ?🚩/g, '').replace(/ ?Flag Battle/g, '') : s;
+  let text = fixPP(caption.text);
   // Текст для охвата: короткий призыв выбрать победителя в комментариях + широкие хэштеги (до 5, лимит Instagram).
   {
     const paras = text.split(/\n\s*\n/).map(x => x.trim()).filter(Boolean);
@@ -307,18 +310,20 @@ async function main() {
         ['Which country do you back? Say it in the comments 👇', 'Follow and tell us who should fight next 🌍'],
         ['Geography test: could you name the winner? Comment it 👇', 'Follow to level up your flag knowledge 🧠'],
       ][Math.abs(parseInt(plan.seed, 10) || 0) % 4];
-      const kind = sel.every(i => /^fc_/.test(i)) ? 'fc' : sel.every(i => /^cb_/.test(i)) ? 'cb' : '';
+      const kind = sel.every(i => /^fc_/.test(i)) ? 'fc' : sel.every(i => /^cb_/.test(i)) ? 'cb' : sel.some(i => /^pp_/.test(i)) ? 'pp' : '';
       const nm = id => { const e = byId[id] ? byId[id].en : id; return /^[A-Z0-9 .&'-]+$/.test(e) && e.length <= 4 ? e : e.toLowerCase().replace(/(^|[ -])([a-z])/g, (m, a, b) => a + b.toUpperCase()); };
       const names = sel.map(nm), joined = names.join(' vs ');
       const KW = kind === 'fc' ? `${joined}: football rivalry quiz. Which club is bigger? Soccer clubs battle, football fans challenge, who is the best team, club crests game.`
         : kind === 'cb' ? `${joined}: car brands battle. Which car brand is the best? Car logo quiz, guess the car brand, car lovers challenge, auto brands showdown.`
+        : kind === 'pp' ? `Simulation battle: the last ball with lines wins.`
         : `${joined}: flag battle quiz. Guess the flag, country flags game, geography quiz, flags of the world, which country wins?`;
       if (kind) {
-        const ic = kind === 'fc' ? '⚽' : '🚗';
+        const ic = kind === 'fc' ? '⚽' : kind === 'pp' ? '⚔️' : '🚗';
         const C2 = kind === 'fc'
           ? ['Which club wins this rivalry? Pick your side in the comments 👇', 'Follow for the next football showdown ⚔️']
+          : kind === 'pp' ? ['Who wins? Pick your side in the comments 👇', 'Follow for the next showdown ⚔️']
           : ['Which car brand wins? Pick your side in the comments 👇', 'Follow for the next car brand showdown ⚔️'];
-        text = [...body.map(b => b.replace(/🚩/g, ic).replace(/\b(Bmw|Gmc|Ktm|Byd|Psg|Psv)\b/g, m => m.toUpperCase())), KW, C2[0], C2[1], [...tags, ...(kind === 'fc' ? ['#football', '#soccer', '#footballfans'] : ['#cars', '#carbrands', '#carsofinstagram'])].join(' ')].join('\n\n');
+        text = [...body.map(b => b.replace(/🚩/g, ic).replace(/\b(Bmw|Gmc|Ktm|Byd|Psg|Psv)\b/g, m => m.toUpperCase())), KW, C2[0], C2[1], [...tags, ...(kind === 'fc' ? ['#football', '#soccer', '#footballfans'] : kind === 'pp' ? ['#battle', '#simulation', '#whowins'] : ['#cars', '#carbrands', '#carsofinstagram'])].join(' ')].join('\n\n');
       } else
       text = [...body, KW, CTA[0], CTA[1], [...tags, '#flagbattle', '#geography', '#countries'].join(' ')].join('\n\n');
     }
@@ -338,7 +343,7 @@ async function main() {
       text = lines.join('\n');
     } else text = text.trimEnd() + '\n\n' + winTag;
   }
-  writeJSON(path.join(OUT, 'post.json'), { video: 'v/' + name + '.mp4', cover, caption: text, title: caption.title, sel, mode, seconds: plan.seconds, seed: plan.seed, createdAt: new Date().toISOString() });
+  writeJSON(path.join(OUT, 'post.json'), { video: 'v/' + name + '.mp4', cover, caption: text, title: fixPP(caption.title), sel, mode, seconds: plan.seconds, seed: plan.seed, createdAt: new Date().toISOString() });
 
   const next = { ...state, history: [...state.history, { date, sel, mode, seed: plan.seed, video: name + '.mp4', ...(plan.winner ? { winner: plan.winner } : {}), ...(SLOT ? { slot: SLOT } : {}) }].slice(-200) };
   if (tourMode) next.tournament = tourAfter;
