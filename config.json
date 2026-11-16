@@ -650,16 +650,8 @@
     "category": "24",
     "fromHour": 12
   },
-  "scheduled": {
-    "2026-11-16T20": [
-      "de",
-      "nl",
-      "ch"
-    ]
-  },
-  "scheduledWinner": {
-    "2026-11-16T20": "nl"
-  },
+  "scheduled": {},
+  "scheduledWinner": {},
   "schedule": {
     "hours": [
       12,
