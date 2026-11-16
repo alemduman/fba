@@ -18,8 +18,10 @@ async function main() {
   const post = readJSON(path.join(OUT, 'post.json'), null);
   if (!post) { console.error('Нет out/post.json'); process.exit(1); }
   // ролики с рекламой азартных игр на YouTube не грузим: правила YouTube запрещают упоминать неодобренные Google сервисы ставок
-  if (post.sponsor) { console.log('В ролике реклама — на YouTube этот ролик не идёт.'); return; }
-  const file = path.join(OUT, 'site', post.video);
+  // в Instagram ролик с рекламой ставок; на YouTube такое нельзя, поэтому берём чистую версию видео и подписи
+  if (post.sponsor && !post.videoClean) { console.log('В ролике реклама, а чистой версии нет — на YouTube этот ролик не идёт.'); return; }
+  const file = path.join(OUT, 'site', post.sponsor ? post.videoClean : post.video);
+  if (post.sponsor) { post.caption = post.captionClean || post.caption.split('\n').filter(l => !/1win|promo code/i.test(l)).join('\n'); console.log('На YouTube идёт версия без рекламы.'); }
   const DRY = /^(1|true|yes)$/i.test(process.env.DRY_RUN || '');
 
   // 1. access token из refresh token
