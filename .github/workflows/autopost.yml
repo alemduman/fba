@@ -17,6 +17,10 @@ on:
         description: 'Ручной бой: id стран через запятую (например ch,de,at). Пусто = как обычно'
         type: string
         default: ''
+      winner:
+        description: 'Ручной бой: id победителя (из countries). Пусто = случайный'
+        type: string
+        default: ''
       only_youtube:
         description: 'Только YouTube (Instagram пропустить)'
         type: boolean
@@ -45,6 +49,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       COUNTRIES: ${{ inputs.countries }}
+      WINNER: ${{ inputs.winner }}
       # Запуск от внешнего планировщика (cron-job.org) ведёт себя как запуск по расписанию
       RUN_KIND: ${{ github.event_name == 'schedule' && 'schedule' || (inputs.source == 'cron' && 'schedule' || github.event_name) }}
     timeout-minutes: 45
