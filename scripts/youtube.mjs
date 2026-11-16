@@ -17,6 +17,8 @@ async function main() {
   if (!id || !secret || !refresh) { console.log('Секреты YouTube не заданы — шаг пропущен.'); return; }
   const post = readJSON(path.join(OUT, 'post.json'), null);
   if (!post) { console.error('Нет out/post.json'); process.exit(1); }
+  // ролики с рекламой азартных игр на YouTube не грузим: правила YouTube запрещают упоминать неодобренные Google сервисы ставок
+  if (post.sponsor) { console.log('В ролике реклама — на YouTube этот ролик не идёт.'); return; }
   const file = path.join(OUT, 'site', post.video);
   const DRY = /^(1|true|yes)$/i.test(process.env.DRY_RUN || '');
 

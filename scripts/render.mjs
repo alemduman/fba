@@ -279,7 +279,13 @@ async function main() {
   const video = path.join(SITE, 'v', name + '.mp4');
   // Instagram просит H.264 + AAC; браузер без проприетарных кодеков пишет VP9/Opus, поэтому перекодируем.
   // Качество максимальное из разрешённого: низкий CRF и неспешный пресет; потолок Instagram для видео 25 Мбит/с, для звука 128 кбит/с
-  execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', raw, '-map', '0:v:0', '-map', '0:a:0?',
+  // Рекламный слот (cfg.ads[слот] или AD_BANNER для проверки): бой уменьшаем и поднимаем, баннер 1080x270 ставим под ним
+  const SPON = (SLOT && cfg.ads && cfg.ads[SLOT]) || (process.env.AD_BANNER ? { banner: process.env.AD_BANNER, caption: process.env.AD_CAPTION || '' } : null);
+  const adArgs = SPON ? ['-i', path.resolve(ROOT, SPON.banner), '-filter_complex',
+    '[0:v]scale=1080:1920,crop=1080:1510:0:220,scale=886:1238:flags=lanczos,pad=1080:1920:97:145:black[v];[v][1:v]overlay=0:1380:format=auto[out]', '-map', '[out]']
+    : ['-map', '0:v:0'];
+  if (SPON) log(`Реклама в ролике: ${SPON.banner}`);
+  execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', raw, ...adArgs, '-map', '0:a:0?',
     '-c:v', 'libx264', '-preset', 'slow', '-profile:v', 'high', '-pix_fmt', 'yuv420p', '-crf', '14', '-maxrate', '24M', '-bufsize', '48M',
     '-g', '120', '-keyint_min', '60', '-sc_threshold', '0', '-flags', '+cgop',
     '-c:a', 'aac', '-b:a', '128k', '-ar', '48000', '-ac', '2', '-movflags', '+faststart', video]);
@@ -343,7 +349,12 @@ async function main() {
       text = lines.join('\n');
     } else text = text.trimEnd() + '\n\n' + winTag;
   }
-  writeJSON(path.join(OUT, 'post.json'), { video: 'v/' + name + '.mp4', cover, caption: text, title: fixPP(caption.title), sel, mode, seconds: plan.seconds, seed: plan.seed, createdAt: new Date().toISOString() });
+  // строка-пометка о рекламе перед хэштегами
+  if (SPON && SPON.caption) {
+    const lines = text.split('\n'), last = (lines[lines.length - 1] || '').trim();
+    text = /^#\S+(\s+#\S+)*$/.test(last) ? [...lines.slice(0, -1), SPON.caption, '', last].join('\n') : text.trimEnd() + '\n\n' + SPON.caption;
+  }
+  writeJSON(path.join(OUT, 'post.json'), { video: 'v/' + name + '.mp4', cover, sponsor: !!SPON, caption: text, title: fixPP(caption.title), sel, mode, seconds: plan.seconds, seed: plan.seed, createdAt: new Date().toISOString() });
 
   const next = { ...state, history: [...state.history, { date, sel, mode, seed: plan.seed, video: name + '.mp4', ...(plan.winner ? { winner: plan.winner } : {}), ...(SLOT ? { slot: SLOT } : {}) }].slice(-200) };
   if (tourMode) next.tournament = tourAfter;
