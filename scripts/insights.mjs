@@ -18,6 +18,15 @@ async function get(p, params = {}) {
   return { ok: r.ok, j };
 }
 
+// MEDIA_ID: проверить один ролик напрямую (виден ли он API и какая у него статистика), без общего списка
+if (process.env.MEDIA_ID) {
+  const id = process.env.MEDIA_ID.trim();
+  const f = await get(id, { fields: 'id,permalink,timestamp,media_type,media_product_type,like_count,comments_count,is_shared_to_feed' });
+  console.log('MEDIA', JSON.stringify(f.ok ? f.j : (f.j.error || f.j)));
+  const ins = await get(`${id}/insights`, { metric: 'views,reach,likes,comments,shares,saved,ig_reels_avg_watch_time' });
+  console.log('MEDIA_INSIGHTS', JSON.stringify(ins.ok ? (ins.j.data || []).map(d => [d.name, d.values?.[0]?.value ?? d.total_value?.value]) : (ins.j.error || ins.j)));
+  process.exit(0);
+}
 const med = [];
 let next = null, page = 0;
 {

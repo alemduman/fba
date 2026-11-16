@@ -1,6 +1,11 @@
 name: Instagram статистика
 on:
   workflow_dispatch:
+    inputs:
+      media_id:
+        description: 'ID одного ролика для проверки (необязательно)'
+        required: false
+        default: ''
 permissions:
   contents: read
 jobs:
@@ -16,4 +21,5 @@ jobs:
         env:
           IG_TOKEN: ${{ secrets.IG_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          MEDIA_ID: ${{ inputs.media_id }}
         run: node scripts/insights.mjs
