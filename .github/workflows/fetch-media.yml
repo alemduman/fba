@@ -1,0 +1,34 @@
+# Скачать опубликованный ролик из Instagram по ID (как он вышел в ленте) и положить в ветку media-out.
+# Только чтение из Instagram: ничего не публикует и не меняет в аккаунте.
+name: fetch-media
+on:
+  workflow_dispatch:
+    inputs:
+      media_id:
+        description: 'ID публикации (mediaId из state.json)'
+        required: true
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Скачать ролик
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+          MID: ${{ inputs.media_id }}
+        run: |
+          set -e
+          J=$(curl -sS "https://graph.facebook.com/v26.0/${MID}?fields=media_url,permalink,timestamp&access_token=${IG_TOKEN}")
+          URL=$(echo "$J" | jq -r '.media_url // empty')
+          [ -n "$URL" ] || { echo "Нет media_url: $(echo "$J" | jq -c '.error // .')"; exit 1; }
+          echo "$J" | jq -c '{permalink,timestamp}'
+          mkdir -p out && curl -sSfL -o "out/${MID}.mp4" "$URL"
+          ls -la out
+      - name: Положить в ветку media-out
+        run: |
+          cd out
+          git init -q -b media-out
+          git add .
+          git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com commit -qm "media ${{ inputs.media_id }}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" media-out
