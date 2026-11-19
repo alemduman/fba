@@ -1255,6 +1255,21 @@
    "mediaId": "18142952068536562",
    "permalink": "https://www.instagram.com/reel/Df6ndg8Er8_/",
    "posted": "2026-11-19T08:09:30.790Z"
+  },
+  {
+   "date": "2026-11-19",
+   "sel": [
+    "dz",
+    "ma"
+   ],
+   "mode": "lines",
+   "seed": 551401,
+   "video": "2026-11-19-algeria-morocco-551401.mp4",
+   "winner": "ma",
+   "slot": "2026-11-19T16",
+   "mediaId": "17900830767610655",
+   "permalink": "https://www.instagram.com/reel/Df7C2K5Gcju/",
+   "posted": "2026-11-19T12:08:34.097Z"
   }
  ],
  "tournament": {
@@ -1279,7 +1294,7 @@
   "W": [
    [
     "no",
-    null,
+    "ma",
     null,
     null
    ],
@@ -1293,7 +1308,7 @@
   ],
   "cur": {
    "r": 0,
-   "m": 0
+   "m": 1
   }
  },
  "lastRefresh": null
