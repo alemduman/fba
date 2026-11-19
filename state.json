@@ -1240,6 +1240,21 @@
    "mediaId": "18140383810643154",
    "permalink": "https://www.instagram.com/reel/Df45jNmkfFC/",
    "posted": "2026-11-18T16:08:53.432Z"
+  },
+  {
+   "date": "2026-11-19",
+   "sel": [
+    "no",
+    "se"
+   ],
+   "mode": "lines",
+   "seed": 329794,
+   "video": "2026-11-19-norway-sweden-329794.mp4",
+   "winner": "no",
+   "slot": "2026-11-19T12",
+   "mediaId": "18142952068536562",
+   "permalink": "https://www.instagram.com/reel/Df6ndg8Er8_/",
+   "posted": "2026-11-19T08:09:30.790Z"
   }
  ],
  "tournament": {
@@ -1247,37 +1262,37 @@
   "outro": true,
   "shuffle": false,
   "src": "all",
-  "phase": "done",
+  "phase": "live",
   "size": 8,
   "ids": [
-   "br",
-   "pt",
-   "uy",
+   "no",
+   "se",
+   "dz",
+   "ma",
    "ar",
-   "mx",
-   "es",
-   "ir",
-   "sa"
+   "uy",
+   "cn",
+   "us"
   ],
   "name": "WORLD FLAG CUP",
-  "date": "2026-11-12",
+  "date": "2026-11-19",
   "W": [
    [
-    "pt",
-    "uy",
-    "es",
-    "sa"
+    "no",
+    null,
+    null,
+    null
    ],
    [
-    "pt",
-    "sa"
+    null,
+    null
    ],
    [
-    "sa"
+    null
    ]
   ],
   "cur": {
-   "r": 2,
+   "r": 0,
    "m": 0
   }
  },
