@@ -1285,6 +1285,21 @@
    "mediaId": "18066423674631816",
    "permalink": "https://www.instagram.com/reel/Df7Qt0SCXsE/",
    "posted": "2026-11-19T14:09:53.098Z"
+  },
+  {
+   "date": "2026-11-19",
+   "sel": [
+    "cn",
+    "us"
+   ],
+   "mode": "lines",
+   "seed": 438389,
+   "video": "2026-11-19-china-usa-438389.mp4",
+   "winner": "cn",
+   "slot": "2026-11-19T20",
+   "mediaId": "18079804193726255",
+   "permalink": "https://www.instagram.com/reel/Df7eX4GlKsK/",
+   "posted": "2026-11-19T16:09:11.491Z"
   }
  ],
  "tournament": {
@@ -1311,7 +1326,7 @@
     "no",
     "ma",
     "uy",
-    null
+    "cn"
    ],
    [
     null,
@@ -1323,7 +1338,7 @@
   ],
   "cur": {
    "r": 0,
-   "m": 2
+   "m": 3
   }
  },
  "lastRefresh": null
