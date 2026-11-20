@@ -1300,6 +1300,21 @@
    "mediaId": "18079804193726255",
    "permalink": "https://www.instagram.com/reel/Df7eX4GlKsK/",
    "posted": "2026-11-19T16:09:11.491Z"
+  },
+  {
+   "date": "2026-11-20",
+   "sel": [
+    "no",
+    "ma"
+   ],
+   "mode": "lines",
+   "seed": 90180,
+   "video": "2026-11-20-norway-morocco-90180.mp4",
+   "winner": "no",
+   "slot": "2026-11-20T12",
+   "mediaId": "18114271832622487",
+   "permalink": "https://www.instagram.com/reel/Df9MOMkiRk_/",
+   "posted": "2026-11-20T08:09:07.236Z"
   }
  ],
  "tournament": {
@@ -1329,7 +1344,7 @@
     "cn"
    ],
    [
-    null,
+    "no",
     null
    ],
    [
@@ -1337,8 +1352,8 @@
    ]
   ],
   "cur": {
-   "r": 0,
-   "m": 3
+   "r": 1,
+   "m": 0
   }
  },
  "lastRefresh": null
