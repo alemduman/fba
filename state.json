@@ -1315,6 +1315,21 @@
    "mediaId": "18114271832622487",
    "permalink": "https://www.instagram.com/reel/Df9MOMkiRk_/",
    "posted": "2026-11-20T08:09:07.236Z"
+  },
+  {
+   "date": "2026-11-20",
+   "sel": [
+    "uy",
+    "cn"
+   ],
+   "mode": "lines",
+   "seed": 489333,
+   "video": "2026-11-20-uruguay-china-489333.mp4",
+   "winner": "uy",
+   "slot": "2026-11-20T16",
+   "mediaId": "17945240175375348",
+   "permalink": "https://www.instagram.com/reel/Df9ntpBmXN2/",
+   "posted": "2026-11-20T12:09:16.623Z"
   }
  ],
  "tournament": {
@@ -1345,7 +1360,7 @@
    ],
    [
     "no",
-    null
+    "uy"
    ],
    [
     null
@@ -1353,7 +1368,7 @@
   ],
   "cur": {
    "r": 1,
-   "m": 0
+   "m": 1
   }
  },
  "lastRefresh": null
