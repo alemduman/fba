@@ -1330,6 +1330,21 @@
    "mediaId": "17945240175375348",
    "permalink": "https://www.instagram.com/reel/Df9ntpBmXN2/",
    "posted": "2026-11-20T12:09:16.623Z"
+  },
+  {
+   "date": "2026-11-20",
+   "sel": [
+    "no",
+    "uy"
+   ],
+   "mode": "lines",
+   "seed": 738947,
+   "video": "2026-11-20-norway-uruguay-738947.mp4",
+   "winner": "uy",
+   "slot": "2026-11-20T18",
+   "mediaId": "17869069596678222",
+   "permalink": "https://www.instagram.com/reel/Df91cURAZmm/",
+   "posted": "2026-11-20T14:09:14.339Z"
   }
  ],
  "tournament": {
@@ -1337,7 +1352,7 @@
   "outro": true,
   "shuffle": false,
   "src": "all",
-  "phase": "live",
+  "phase": "done",
   "size": 8,
   "ids": [
    "no",
@@ -1363,12 +1378,12 @@
     "uy"
    ],
    [
-    null
+    "uy"
    ]
   ],
   "cur": {
-   "r": 1,
-   "m": 1
+   "r": 2,
+   "m": 0
   }
  },
  "lastRefresh": null
