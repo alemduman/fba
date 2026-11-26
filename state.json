@@ -1680,6 +1680,21 @@
    "mediaId": "18138050047855586",
    "permalink": "https://www.instagram.com/reel/DgMo-e7pjAC/",
    "posted": "2026-11-26T08:08:55.302Z"
+  },
+  {
+   "date": "2026-11-26",
+   "sel": [
+    "ng",
+    "gh"
+   ],
+   "mode": "lines",
+   "seed": 491108,
+   "video": "2026-11-26-nigeria-ghana-491108.mp4",
+   "winner": "gh",
+   "slot": "2026-11-26T16",
+   "mediaId": "17878527975638233",
+   "permalink": "https://www.instagram.com/reel/DgNEbp_BrYD/",
+   "posted": "2026-11-26T12:08:47.511Z"
   }
  ],
  "tournament": {
@@ -1704,7 +1719,7 @@
   "W": [
    [
     "dk",
-    null,
+    "gh",
     null,
     null
    ],
@@ -1718,7 +1733,7 @@
   ],
   "cur": {
    "r": 0,
-   "m": 0
+   "m": 1
   }
  },
  "lastRefresh": null
