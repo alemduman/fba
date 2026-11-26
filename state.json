@@ -1695,6 +1695,21 @@
    "mediaId": "17878527975638233",
    "permalink": "https://www.instagram.com/reel/DgNEbp_BrYD/",
    "posted": "2026-11-26T12:08:47.511Z"
+  },
+  {
+   "date": "2026-11-26",
+   "sel": [
+    "de",
+    "fr"
+   ],
+   "mode": "lines",
+   "seed": 809158,
+   "video": "2026-11-26-germany-france-809158.mp4",
+   "winner": "fr",
+   "slot": "2026-11-26T18",
+   "mediaId": "18193342249411362",
+   "permalink": "https://www.instagram.com/reel/DgNSLYRo_Vy/",
+   "posted": "2026-11-26T14:08:50.339Z"
   }
  ],
  "tournament": {
@@ -1720,7 +1735,7 @@
    [
     "dk",
     "gh",
-    null,
+    "fr",
     null
    ],
    [
@@ -1733,7 +1748,7 @@
   ],
   "cur": {
    "r": 0,
-   "m": 1
+   "m": 2
   }
  },
  "lastRefresh": null
