@@ -1740,6 +1740,21 @@
    "mediaId": "18119557703087478",
    "permalink": "https://www.instagram.com/reel/DgPNybFtfa1/",
    "posted": "2026-11-27T08:09:05.168Z"
+  },
+  {
+   "date": "2026-11-27",
+   "sel": [
+    "fr",
+    "au"
+   ],
+   "mode": "lines",
+   "seed": 452180,
+   "video": "2026-11-27-france-australia-452180.mp4",
+   "winner": "fr",
+   "slot": "2026-11-27T16",
+   "mediaId": "18136075732801237",
+   "permalink": "https://www.instagram.com/reel/DgPpNqoO0vz/",
+   "posted": "2026-11-27T12:08:44.332Z"
   }
  ],
  "tournament": {
@@ -1770,7 +1785,7 @@
    ],
    [
     "dk",
-    null
+    "fr"
    ],
    [
     null
@@ -1778,7 +1793,7 @@
   ],
   "cur": {
    "r": 1,
-   "m": 0
+   "m": 1
   }
  },
  "lastRefresh": null
