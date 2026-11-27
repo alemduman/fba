@@ -1725,6 +1725,21 @@
    "mediaId": "18031265300872490",
    "permalink": "https://www.instagram.com/reel/DgNgF2IhO6s/",
    "posted": "2026-11-26T16:10:53.040Z"
+  },
+  {
+   "date": "2026-11-27",
+   "sel": [
+    "dk",
+    "gh"
+   ],
+   "mode": "lines",
+   "seed": 120408,
+   "video": "2026-11-27-denmark-ghana-120408.mp4",
+   "winner": "dk",
+   "slot": "2026-11-27T12",
+   "mediaId": "18119557703087478",
+   "permalink": "https://www.instagram.com/reel/DgPNybFtfa1/",
+   "posted": "2026-11-27T08:09:05.168Z"
   }
  ],
  "tournament": {
@@ -1754,7 +1769,7 @@
     "au"
    ],
    [
-    null,
+    "dk",
     null
    ],
    [
@@ -1762,8 +1777,8 @@
    ]
   ],
   "cur": {
-   "r": 0,
-   "m": 3
+   "r": 1,
+   "m": 0
   }
  },
  "lastRefresh": null
