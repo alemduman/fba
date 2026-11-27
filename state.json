@@ -1755,6 +1755,21 @@
    "mediaId": "18136075732801237",
    "permalink": "https://www.instagram.com/reel/DgPpNqoO0vz/",
    "posted": "2026-11-27T12:08:44.332Z"
+  },
+  {
+   "date": "2026-11-27",
+   "sel": [
+    "dk",
+    "fr"
+   ],
+   "mode": "lines",
+   "seed": 102818,
+   "video": "2026-11-27-denmark-france-102818.mp4",
+   "winner": "dk",
+   "slot": "2026-11-27T18",
+   "mediaId": "18124252075979799",
+   "permalink": "https://www.instagram.com/reel/DgP2-zeAJem/",
+   "posted": "2026-11-27T14:08:55.907Z"
   }
  ],
  "tournament": {
@@ -1762,7 +1777,7 @@
   "outro": true,
   "shuffle": false,
   "src": "all",
-  "phase": "live",
+  "phase": "done",
   "size": 8,
   "ids": [
    "se",
@@ -1788,12 +1803,12 @@
     "fr"
    ],
    [
-    null
+    "dk"
    ]
   ],
   "cur": {
-   "r": 1,
-   "m": 1
+   "r": 2,
+   "m": 0
   }
  },
  "lastRefresh": null
